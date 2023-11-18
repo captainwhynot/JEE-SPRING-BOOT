@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 
 @Entity
+@DiscriminatorValue("administrator")
 public class Administrator extends User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

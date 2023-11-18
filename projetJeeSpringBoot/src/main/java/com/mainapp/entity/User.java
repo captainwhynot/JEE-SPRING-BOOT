@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import org.hibernate.annotations.DiscriminatorOptions;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorOptions(force = true)
+@DiscriminatorColumn(name = "TYPE_USER", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
 	@Id
@@ -20,7 +22,7 @@ public class User {
 	private String email;
 	private String password;
 	private String username;
-	private String typeUser;
+	//private String typeUser;
 	private String profilePicture;
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Moderator moderator;
@@ -39,7 +41,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.username = username;
-		this.typeUser = typeUser;
+		//this.typeUser = typeUser;
 		this.profilePicture = "img/profilePicture.png";
 	}
 
@@ -75,13 +77,13 @@ public class User {
 		this.username = username;
 	}
 
-	public String getTypeUser() {
+	/*public String getTypeUser() {
 		return typeUser;
-	}
+	}*/
 
-	public void setTypeUser(String typeUser) {
+	/*public void setTypeUser(String typeUser) {
 		this.typeUser = typeUser;
-	}
+	}*/
 
 	public List<Product> getProducts() {
 		return products;

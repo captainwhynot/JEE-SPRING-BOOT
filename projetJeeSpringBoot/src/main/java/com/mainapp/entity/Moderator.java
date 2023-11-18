@@ -5,6 +5,8 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 
 @Entity
+@DiscriminatorValue("moderator")
+
 public class Moderator extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;

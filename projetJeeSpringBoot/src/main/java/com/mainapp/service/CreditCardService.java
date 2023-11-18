@@ -1,7 +1,7 @@
-package com.mainapp.service;
-import org.springframework.stereotype.Service;
-
-@Service
-public class CreditCardService {
-
-}
+//package com.mainapp.service;
+//import org.springframework.stereotype.Service;
+//
+//@Service
+//public class CreditCardService {
+//
+//}

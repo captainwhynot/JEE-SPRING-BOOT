@@ -3,9 +3,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mainapp.entity.*;
-import com.mainapp.repository.AdministratorRepository;
+/*import com.mainapp.repository.AdministratorRepository;
 import com.mainapp.repository.CustomerRepository;
-import com.mainapp.repository.ModeratorRepository;
+import com.mainapp.repository.ModeratorRepository;*/
 import com.mainapp.repository.UserRepository;
 
 import jakarta.servlet.http.Part;
@@ -24,16 +24,30 @@ import org.mindrot.jbcrypt.*;
 @Service
 public class UserService {
 	
-	@Autowired
-	private UserRepository ur;
-	@Autowired
-	private ModeratorRepository mr;
+	
+	private final UserRepository ur;
+	
+	//@Autowired
+	//private ModeratorRepository mr;
+	
+	//@Autowired
+	//private AdministratorRepository ar;
+	
+	//@Autowired
+	//private CustomerRepository cr;
+	
+	//@Autowired
+	/*public UserService (UserRepository ur, ModeratorRepository mr, CustomerRepository cr, AdministratorRepository ar) {
+		this.ur = ur;
+		this.mr = mr;
+		this.ar = ar;
+		this.cr = cr;
+	}*/
 	
 	@Autowired
-	private AdministratorRepository ar;
-	
-	@Autowired
-	private CustomerRepository cr;
+	public UserService(UserRepository ur) {
+		this.ur = ur;
+	}
 	
 	
 	public User getUser(String email) {
@@ -44,9 +58,9 @@ public class UserService {
 		return ur.getUser(id);
 	}
 	
-	public void updateUser(User user, String email, String username, String password) {
+	/*public void updateUser(User user, String email, String username, String password) {
 		ur.updateUser(user, email, username, password);
-	}
+	}*/
 	
 	public boolean checkUserMail(User user) {
 		if(ur.checkMailUser(user).isEmpty() == false)
@@ -70,20 +84,20 @@ public class UserService {
 	public void saveUser(User user) {
 		if(ur.checkMailUser(user).isEmpty() == false) {
 			try {
-				switch (user.getTypeUser()) {
+				switch (user.getUsername()) { //ACHANGER AVEC LE TYPE
 					case "Administrator" :
 						Administrator admin = new Administrator(user.getEmail(), user.getPassword(), user.getUsername());
 						//save = (Integer) session.save(admin);
-						ar.addAdministrator(admin);
+						//ar.addAdministrator(admin);
 						
 						break;
 					case "Customer" :
 						Customer customer = new Customer(user.getEmail(), user.getPassword(), user.getUsername());
-						cr.addCustomer(customer);
+						//cr.addCustomer(customer);
 						break;
 					case "Moderator" :
 						Moderator moderator = new Moderator(user.getEmail(), user.getPassword(), user.getUsername());
-						mr.addModerator(moderator);
+						//mr.addModerator(moderator);
 						break;
 				}
 		} catch(Exception e) {

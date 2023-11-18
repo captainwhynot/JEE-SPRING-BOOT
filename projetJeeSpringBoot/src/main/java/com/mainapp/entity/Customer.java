@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
+@DiscriminatorValue("customer")
 public class Customer extends User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
