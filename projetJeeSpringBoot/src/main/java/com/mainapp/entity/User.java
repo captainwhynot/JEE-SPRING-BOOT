@@ -24,12 +24,15 @@ public class User {
 	private String username;
 	//private String typeUser;
 	private String profilePicture;
+	@Transient
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Moderator moderator;
+	private Moderator moderator;
+	@Transient
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Customer customer;
+	private Customer customer;
+	@Transient
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Administrator admin;
+	private Administrator admin;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 	
@@ -85,6 +88,15 @@ public class User {
 		this.typeUser = typeUser;
 	}*/
 
+	@Transient
+    public String getTypeUser() {
+        DiscriminatorValue discriminatorValue = getClass().getAnnotation(DiscriminatorValue.class);
+        if (discriminatorValue != null) {
+            return discriminatorValue.value();
+        }
+        return null;
+    }
+	
 	public List<Product> getProducts() {
 		return products;
 	}

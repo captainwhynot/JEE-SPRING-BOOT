@@ -6,11 +6,12 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("customer")
+@DiscriminatorValue("Customer")
 public class Customer extends User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private int fidelityPoint;
+	@Transient
 	@OneToOne
     @JoinColumn(name = "id")
     private User user;

@@ -24,13 +24,15 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 	List<Customer> findAll();*/
 	
 	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email = :#{#customer.email}", nativeQuery = true)
-    void checkCustomer(@Param("customer")Customer customer);
+	Customer checkCustomer(@Param("customer") Customer customer);
+
 	
 	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id", nativeQuery = true)
     List<Customer> getCustomerList();
 	
-	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email= :email", nativeQuery = true)
-    Customer getCustomer(@Param("email")String email);
+	@Query("SELECT c FROM Customer c JOIN User u ON c.id = u.id WHERE u.email= :email")
+	Customer getCustomerByEmail(@Param("email") String email);
+
 	
 	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.id= :idCustomer", nativeQuery = true)
     Customer getCustomer(@Param("idCustomer")int idCustomer);

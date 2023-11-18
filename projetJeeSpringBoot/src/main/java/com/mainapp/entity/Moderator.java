@@ -5,7 +5,7 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("moderator")
+@DiscriminatorValue("Moderator")
 
 public class Moderator extends User implements Serializable {
 
@@ -13,6 +13,7 @@ public class Moderator extends User implements Serializable {
 	private boolean addProduct;
 	private boolean modifyProduct;
 	private boolean deleteProduct;
+	@Transient
 	@OneToOne
     @JoinColumn(name = "id")
     private User user;

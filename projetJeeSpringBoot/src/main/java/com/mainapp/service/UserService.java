@@ -63,10 +63,7 @@ public class UserService {
 	}*/
 	
 	public boolean checkUserMail(User user) {
-		if(ur.checkMailUser(user).isEmpty() == false)
-			return false;
-		else
-			return true;
+		return (ur.checkMailUser(user.getEmail()).isEmpty());
 	}
 	
 	public boolean checkUserLogin(String email, String password) {
@@ -82,25 +79,27 @@ public class UserService {
 	}
 	
 	public void saveUser(User user) {
-		if(ur.checkMailUser(user).isEmpty() == false) {
+		System.out.println("saving");
+		if(checkUserMail(user)) {
+			System.out.println("saved");
 			try {
-				switch (user.getUsername()) { //ACHANGER AVEC LE TYPE
+				System.out.println(user.getTypeUser());
+				switch (user.getTypeUser()) { //ACHANGER AVEC LE TYPE
 					case "Administrator" :
 						Administrator admin = new Administrator(user.getEmail(), user.getPassword(), user.getUsername());
-						//save = (Integer) session.save(admin);
-						//ar.addAdministrator(admin);
-						
+						ur.save(admin);
 						break;
 					case "Customer" :
 						Customer customer = new Customer(user.getEmail(), user.getPassword(), user.getUsername());
-						//cr.addCustomer(customer);
+						ur.save(customer);
 						break;
 					case "Moderator" :
 						Moderator moderator = new Moderator(user.getEmail(), user.getPassword(), user.getUsername());
-						//mr.addModerator(moderator);
+						ur.save(moderator);
 						break;
 				}
 		} catch(Exception e) {
+			e.printStackTrace();
 			}
 		}
 		

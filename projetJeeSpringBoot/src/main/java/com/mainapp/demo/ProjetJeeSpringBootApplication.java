@@ -10,11 +10,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.mainapp.entity.Customer;
-import com.mainapp.entity.Test;
-//import com.mainapp.service.CustomerService;
-import com.mainapp.service.TestService;
-import com.mainapp.service.UserService;
+import com.mainapp.entity.*;
+import com.mainapp.service.*;
 @SpringBootApplication(scanBasePackages = "com.mainapp")
 @EnableJpaRepositories(basePackages = "com.mainapp")
 @EntityScan(basePackages = "com.mainapp.entity")
@@ -31,28 +28,31 @@ public class ProjetJeeSpringBootApplication {
 	}
 
 	@Bean
-    public CommandLineRunner demo(TestService s) {
+    public CommandLineRunner demo(TestService ts, UserService us) {
         return (args) -> {
         	try {
         		System.out.println("TEST");
                 
-             	
+                // Créer un client
+                Customer customer = new Customer("customer@email.com", "password", "CustomerUser");
+                us.saveUser(customer);
+                
+                User user = us.getUser(1);
+                System.out.println(user.getEmail());
+                
              	//Ajouter un test
-        		//Test test = new Test("test1",10.1);		
-        		//s.saveTest(test);
-        		
-        		
-        		
+        		Test test = new Test("test1",10.1);		
+        		ts.saveTest(test);
+        		        		
         		//Trouver tous les tests
-        		//List<Test> tests = s.getAllTest();
+        		List<Test> tests = ts.getAllTest();
         		
         		//trouver 1 test
-        		//Test test = s.findById(2);
-        		
+        		Test test1 = ts.findById(1);
+
         		//Update un test
-        		//s.updateTest(test, 9, "NOOOM");
-        		//System.out.println(s.findById(2).getName()+" ---- "+s.findById(2).getPrice());
-        		
+        		ts.updateTest(test, 9, "NOOOM");
+        		System.out.println(ts.findById(2).getName()+" ---- "+ts.findById(2).getPrice());
         		
         		
         		//s.deleteTest(1);
