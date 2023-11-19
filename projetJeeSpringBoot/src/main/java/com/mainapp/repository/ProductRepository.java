@@ -21,13 +21,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	
 	@Transactional
     @Modifying
-    @Query(value = "UPDATE Product SET image = :fileName WHERE id = :id", nativeQuery = true)
+    @Query(value = "UPDATE Product SET img = :fileName WHERE id = :id", nativeQuery = true)
 	int updateProductImg(@Param("id") int id, @Param("fileName") String fileName);
 
     @Query(value = "SELECT * FROM Product WHERE id = :id", nativeQuery = true)
 	Product getProduct(@Param("id") int id);
     
-    @Query(value = "SELECT * FROM Product WHERE sellerId= :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM Product WHERE seller_id= :id", nativeQuery = true)
 	List<Product> getSellerProducts(@Param("id") int id);
     
     @Query(value = "SELECT * FROM Product WHERE name LIKE '%:search%'", nativeQuery = true)

@@ -2,13 +2,14 @@ package com.mainapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mainapp.entity.*;
 import com.mainapp.repository.UserRepository;
 
-import jakarta.servlet.http.Part;
-
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -72,14 +73,13 @@ public class UserService {
 		return (update > 0);
 	}
 	
-	public boolean updateProfilePicture(User user, Part filePart, String profilePicture, String savePath) {
+	public boolean updateProfilePicture(User user, MultipartFile imgFile, String savePath) {
 		try {
 			int userId = user.getId();
 
 	        File imgDir = new File(savePath);
 	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(userId + "_"));
 	        
-	        //Delete all the old profile picture of the user
 	        if (files != null) {
 	            for (File file : files) {
 	                file.delete();
@@ -93,8 +93,9 @@ public class UserService {
 	        }
 
 	        //Save the profile picture in the folder
-			String filePath = savePath + File.separator + profilePicture;
-			filePart.write(filePath);
+	        String profilePicture = user.getId() + "_" + imgFile.getOriginalFilename();
+			Path imgFilePath = Paths.get(savePath).resolve(profilePicture);
+			imgFile.transferTo(imgFilePath.toFile());
 			
 			profilePicture = "img/Profil/" + profilePicture;
 			int update = ur.updateProfilePicture(userId, profilePicture);

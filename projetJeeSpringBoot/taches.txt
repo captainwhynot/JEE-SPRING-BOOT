@@ -1,7 +1,17 @@
 Controller :
+- AddModeratorController.java -> transfer réussi mais page bugué
+- BasketController.java -> à tester
+- HistoryController.java -> à tester
+- ManageFidelityPointController.java -> marche mais page bugué
+- ManageProductController.java -> suppression produit cassé + update produit cassé
+- MarketController.java -> page bugué + mauvaise requete
+- ProductDetailController.java -> à tester
 
 
-Profile Picture à gérer
+Service :
+- Vérifier que toutes les méthodes sont dans les Service (à voir en faisant les controller)
+- Supprimer les images dans le dossier d'un produit qu'on supprime
+- Les suppressions de produits ne marchent pas
 
 
-Javadoc
+- Javadoc en anglais

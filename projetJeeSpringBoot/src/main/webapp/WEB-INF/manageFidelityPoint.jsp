@@ -30,7 +30,7 @@
 	                             <td><%= customer.getEmail() %>
 	                             <input type="hidden" name="customerList" value="<%= customer.getEmail() %>"></td>
 	                             <td><%= customer.getUsername() %></td>
-	                             <td><input type="number" name="fidelityPointList" value="<%= customer.getFidelityPoint() %>"></td>
+	                             <td><input type="number" step="0.01" name="fidelityPointList" value="<%= customer.getFidelityPoint() %>"></td>
 	                         </tr>
 	                     <% } %>
 	                 </tbody>
@@ -44,4 +44,6 @@
 <% } else { %>
 <script type="text/javascript">showAlert();</script>
 <% } %>
+<%= session.getAttribute("showAlert") %>
+<% session.removeAttribute("showAlert"); %>
 </html>

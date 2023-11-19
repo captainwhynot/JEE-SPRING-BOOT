@@ -9,72 +9,66 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mainapp.entity.User;
-
-
-import java.io.IOException;
-
 import com.mainapp.entity.*;
+import com.mainapp.service.ProductService;
+import com.mainapp.service.UserService;
+
+import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/AddProduct")
-//@SessionAttributes("user")
-//Si il y a plusieurs var en session
-@SessionAttributes({"name","price","stock","sellerId"})
+@SessionAttributes({"name", "price", "stock", "sellerId", "user", "showAlert"})
 public class AddProductController {
 
-    @GetMapping
-    public String doGet( Model model) {
-    	if(!IndexController.isLogged(model)) {
-        	return "index";
-        }
+	private UserService userService;
+	private ProductService productService;
+	private ServletContext servletContext;
 
+	public AddProductController(UserService us, ProductService ps, ServletContext servletContext) {
+		this.userService = us;
+		this.productService = ps;
+		this.servletContext = servletContext;
+	}
+    @GetMapping
+    public String doGet(Model model) {
+    	if(!IndexController.isLogged(model)) {
+        	return "redirect:/Index";
+        }
         return "addProduct";
     }
 
     @PostMapping
-    public String doPost( Model model) {
+    public String doPost(@RequestParam("name") String name,
+    		@RequestParam("price") double price,
+    		@RequestParam("stock") int stock,
+    		@RequestParam("sellerId") int sellerId,
+            @RequestParam("img") MultipartFile imgFile,
+            Model model) {
     	if(!IndexController.isLogged(model)) {
-        	return "index";
+        	return "redirect:/Index";
         }
-    	String name = (String) model.getAttribute("name");
-    	double price = Double.parseDouble((String) model.getAttribute("price"));
-		int stock = Integer.parseInt((String) model.getAttribute("stock"));
-		int sellerId = Integer.parseInt((String) model.getAttribute("sellerId"));
-		
-		//Histoire de part et de file ?????
-		//Part filePart = request.getPart("img");
-        //String fileName = ServletIndex.getSubmittedFileName(filePart);
-		
-		
-		//UserService userService = new UserService;
-		//User seller = userDao.getUser(sellerId);
+    	
+		User seller = userService.getUser(sellerId);
 		
 		Product product = new Product();
 		product.setName(name);
 		product.setPrice(price);
 		product.setStock(stock);
-		//product.setUser(seller);
+		product.setUser(seller);
 
-		//ProductService productService = new ProductService;
-        //String savePath = this.getServletContext().getRealPath("/img/Product");
+        String savePath = this.servletContext.getRealPath("/img/Product");
 
-		if (/*productDao.addProduct(product)*/true) {
+		if (productService.addProduct(product)) {
 	        //Save the image in the database
-			if (/*productDao.updateProductImg(product, filePart, fileName, savePath)*/true) {
-				System.out.println("msg validation");
-				return "manageProduct";
-				//response.getWriter().println("<script>showAlert('The product has been added!', 'success', './ManageProduct');</script>");
+			if (productService.updateProductImg(product, imgFile, "", savePath)) {
+				model.addAttribute("showAlert", "<script>showAlert('The product has been added.', 'success', './ManageProduct')</script>");
 			} else {
-				System.out.println("msg erreur");
-				return "manageProduct";
-				//response.getWriter().println("<script>showAlert('The product\\'s image has not been saved', 'warning', './ManageProduct');</script>");
+				model.addAttribute("showAlert", "<script>showAlert('The product\\'s image has not been saved.', 'warning', './ManageProduct')</script>");
 			}
 		} else {
-			System.out.println("msg erreur2");
-			return "manageProduct";
-			//response.getWriter().println("<script>showAlert('Error ! The product has not been added', 'error', '');</script>");
+			model.addAttribute("showAlert", "<script>showAlert('Error ! The product has not been added.', 'error', '')</script>");
 		}
+		return doGet(model);
     }
 
    

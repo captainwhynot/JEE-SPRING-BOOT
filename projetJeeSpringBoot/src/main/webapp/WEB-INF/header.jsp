@@ -10,7 +10,6 @@
 <%
 User loginUser = (User) session.getAttribute("user");
 boolean isLogged = loginUser != null && loginUser.getId() != 0;
-System.out.println(isLogged);
 %>
 <head>
 <title>MANGASTORE</title>

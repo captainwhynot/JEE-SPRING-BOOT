@@ -32,7 +32,7 @@ public class Customer extends User implements Serializable {
 		return fidelityPoint;
 	}
 
-	private void setFidelityPoint(int fidelityPoint) {
+	private void setFidelityPoint(double fidelityPoint) {
 		this.fidelityPoint = fidelityPoint;
 	}
 

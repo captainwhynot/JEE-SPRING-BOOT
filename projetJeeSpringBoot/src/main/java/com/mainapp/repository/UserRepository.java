@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	List<User> checkMailUser(@Param("email") String email);
 	
 	
-	@Query(value = "SELECT *,0 as fidelity_point, 0 as add_product, 0 as modify_product,0 as delete_product FROM User WHERE typeUser != 'Administrator'", nativeQuery = true)
+	@Query(value = "SELECT *,0 as fidelity_point, 0 as add_product, 0 as modify_product,0 as delete_product FROM User WHERE type_user != 'Administrator'", nativeQuery = true)
 	List<User> getAllNoAdministrator();
 	
 	@Transactional

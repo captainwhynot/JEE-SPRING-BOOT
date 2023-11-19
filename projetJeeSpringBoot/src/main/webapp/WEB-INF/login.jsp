@@ -26,4 +26,5 @@
 	<%@ include file="footer.jsp"%>
 </body>
 <%= session.getAttribute("showAlert") %>
+<% session.removeAttribute("showAlert"); %>
 </html>

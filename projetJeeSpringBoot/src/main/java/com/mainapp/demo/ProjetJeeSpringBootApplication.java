@@ -30,7 +30,7 @@ public class ProjetJeeSpringBootApplication {
         return (args) -> {
         	try {              
         		// Créer un administrateur
-                Administrator admin = new Administrator("mailAdmin",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
+                /*Administrator admin = new Administrator("mailAdmin",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
                 us.saveUser(admin);
                 
                 // Créer et modifier un modo
@@ -118,7 +118,7 @@ public class ProjetJeeSpringBootApplication {
         			if (ccs.checkBalance(123, bs.totalPrice(cust.getId()))) {
         				System.out.println(bs.finalizePaiement(cust.getId(), 123, bs.totalPrice(cust.getId()),"testMain"));
         			}
-        		}
+        		}*/
         		
         		/*cs.transferIntoModerator(cust);
         		ms.transferIntoCustomer(modo);

@@ -101,4 +101,6 @@ if (isLogged) {
 <% } else { %>
 <script type="text/javascript">showAlert();</script>
 <% } %>
+<%= session.getAttribute("showAlert") %>
+<% session.removeAttribute("showAlert"); %>
 </html>

@@ -114,7 +114,7 @@ if (canModifyProduct || canDeleteProduct) {
 	            	showAlert("Success : " + response.status, "success", "./ManageProduct");
 	            },
 	            error: function (jqXHR, textStatus, errorThrown) {
-	            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseJSON.status, "error", "./ManageProduct");
+	            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseJSON.error, "error", "./ManageProduct");
 	            }
 	        });
 	    }
@@ -123,4 +123,6 @@ if (canModifyProduct || canDeleteProduct) {
 <% } else { %>
 <script type="text/javascript">showAlert();</script>
 <% } %>
+<%= session.getAttribute("showAlert") %>
+<% session.removeAttribute("showAlert"); %>
 </html>

@@ -2,13 +2,9 @@ package com.mainapp.entity;
 
 import jakarta.persistence.*;
 
-
 import org.hibernate.annotations.DiscriminatorOptions;
 
-import java.io.Serializable;
 import java.util.List;
-
-
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

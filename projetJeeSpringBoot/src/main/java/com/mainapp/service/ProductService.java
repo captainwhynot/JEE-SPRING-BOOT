@@ -1,15 +1,16 @@
 package com.mainapp.service;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mainapp.entity.Product;
 import com.mainapp.entity.Basket;
 import com.mainapp.repository.ProductRepository;
-
-import jakarta.servlet.http.Part;
 
 @Service
 public class ProductService {
@@ -46,19 +47,20 @@ public class ProductService {
 		}
 	}
 	
-	public boolean updateProductImg(Product product, Part filePart, String fileName, String savePath) {
+	public boolean updateProductImg(Product product, MultipartFile imgFile, String fileName, String savePath) {
 		try {
 			int productId = product.getId();
 
 	        File imgDir = new File(savePath);
 	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(productId + "_"));
 	        
-	        //Delete all the old profile picture of the user
+	        //Delete all the old image of the product
 	        if (files != null) {
 	            for (File file : files) {
 	                file.delete();
 	            }
 	        }
+	        
 			//Create product folder if it does not exist
 			File saveDir = new File(savePath);
 	        if (!saveDir.exists()) {
@@ -66,9 +68,10 @@ public class ProductService {
 	        }
 
 	        //Save the image in the folder
-	        fileName = product.getId() + "_"+ fileName;
-			String filePath = savePath + File.separator + fileName;
-			filePart.write(filePath);
+	        if (fileName.equals("")) fileName = product.getId() + "_" + imgFile.getOriginalFilename();
+	        else fileName = product.getId() + "_" + fileName;
+			Path imgFilePath = Paths.get(savePath).resolve(fileName);
+			imgFile.transferTo(imgFilePath.toFile());
 	        
 			fileName = "img/Product/" + fileName;
 			int update = pr.updateProductImg(productId, fileName);

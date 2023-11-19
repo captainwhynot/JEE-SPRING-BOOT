@@ -27,7 +27,9 @@ public class LoginController {
     }
 
     @PostMapping
-    public String doPost(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
+    public String doPost(@RequestParam("email") String email,
+    		@RequestParam("password") String password,
+    		Model model) {
 		//Check the login's information then log in
 		if (userService.checkUserLogin(email, password)) {
 			User user = userService.getUser(email);

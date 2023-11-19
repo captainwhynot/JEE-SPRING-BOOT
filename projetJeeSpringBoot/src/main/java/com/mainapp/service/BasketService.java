@@ -120,7 +120,7 @@ public class BasketService {
 		return (numberRowSolde > 0 && numberRowBasket > 0 && numberFidelityPoint && numberRowProduct > 0);
 	}
 	
-	private boolean checkStock(int id, int quantity) {
+	public boolean checkStock(int id, int quantity) {
 		Integer stock = br.getStock(id);
 		if (stock != null) return (stock >= quantity);
 		else return false;
