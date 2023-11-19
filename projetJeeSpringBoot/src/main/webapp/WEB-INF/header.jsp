@@ -1,21 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true"%>
 <%@ page import="com.mainapp.repository.*"%>
 <%@ page import="com.mainapp.entity.*"%>
 <%@ page import="com.mainapp.demo.*"%>
 <%@ page import="com.mainapp.service.*"%>
 <%@ page import="com.mainapp.controller.*"%>
-<%@ page import="org.springframework.ui.Model" %>
 
 
 <%
-String testVar = "eeeeeee";
-testVar = (String) session.getAttribute("test");
-System.out.println("Test : "+ testVar);
-
-/*User loginUser = IndexController.loginUser(model);
-boolean isLogged = IndexController.isLogged(request, response);*/
-
+User loginUser = (User) session.getAttribute("user");
+boolean isLogged = loginUser != null && loginUser.getId() != 0;
 %>
 <head>
 <title>MANGASTORE</title>
@@ -64,7 +58,6 @@ boolean isLogged = IndexController.isLogged(request, response);*/
 </head>
 <header>
 	<!-- navbar top -->
-	<h1>TEEEEEEST : ${testVar}  </h1>
 	<div class="container">
 		<div class="navbar-top">
 			<div class="social-link">

@@ -30,7 +30,7 @@ public class ProjetJeeSpringBootApplication {
         return (args) -> {
         	try {              
         		// Créer un administrateur
-                Administrator admin = new Administrator("admin@email.com",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
+                Administrator admin = new Administrator("mailAdmin",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
                 us.saveUser(admin);
                 
                 // Créer et modifier un modo

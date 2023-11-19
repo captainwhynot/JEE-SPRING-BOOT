@@ -1,0 +1,25 @@
+.imgProduct{
+    width:384px;
+    height:351px
+}
+a{
+    text-decoration:none;
+}
+.product{
+    border: 1px solid black;
+    text-align :center;    
+}
+
+button {
+    background-color: #f0e4d4; /* ou grey pour gris */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px; /* Taille du texte ajustée */
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+button:hover {
+    opacity: 0.8;
+}
