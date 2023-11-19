@@ -71,6 +71,10 @@ public class BasketService {
 		return br.getBasketList(customerId);
 	}
 	
+	public List<Basket> getHistoryList(int customerId) {
+		return br.getHistoryList(customerId);
+	}
+	
 	public Basket getBasket(int id) {
 		return br.getBasket(id);
 	}

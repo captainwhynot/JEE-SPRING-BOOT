@@ -39,4 +39,7 @@ public interface BasketRepository extends JpaRepository<Basket, Integer> {
 
     @Query(value = "SELECT stock FROM Product p JOIN Basket b ON p.id = b.product_id WHERE b.id = :id", nativeQuery = true)
     Integer getStock(@Param("id") int id);
+    
+    @Query(value = "SELECT * FROM Basket WHERE customerId = :id AND purchaseDate IS NOT NULL;", nativeQuery = true)
+    List<Basket> getHistoryList(@Param("id") int id);
 }

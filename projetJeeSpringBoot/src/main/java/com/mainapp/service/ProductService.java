@@ -82,6 +82,14 @@ public class ProductService {
 		return pr.findAll();
 	}
 	
+	public List<Product> getProductByName(String search) {
+		return pr.getProductByName(search);
+	}
+	
+	public List<Product> getSellerProducts(int id) {
+		return pr.getSellerProducts(id);
+	}
+	
 	public Product getProduct(int id) {
 		return pr.getProduct(id);
 	}

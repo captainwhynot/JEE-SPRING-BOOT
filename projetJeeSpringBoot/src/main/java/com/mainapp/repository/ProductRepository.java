@@ -1,5 +1,7 @@
 package com.mainapp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +26,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
     @Query(value = "SELECT * FROM Product WHERE id = :id", nativeQuery = true)
 	Product getProduct(@Param("id") int id);
+    
+    @Query(value = "SELECT * FROM Product WHERE sellerId= :id", nativeQuery = true)
+	List<Product> getSellerProducts(@Param("id") int id);
+    
+    @Query(value = "SELECT * FROM Product WHERE name LIKE '%:search%'", nativeQuery = true)
+	List<Product> getProductByName(@Param("search") String search);
+    
+   
+
 
 	@Transactional
     @Modifying

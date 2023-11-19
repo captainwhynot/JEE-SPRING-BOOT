@@ -9,6 +9,7 @@ import com.mainapp.repository.UserRepository;
 import jakarta.servlet.http.Part;
 
 import java.io.File;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -126,6 +127,10 @@ public class UserService {
 	
 	public boolean checkUserMail(User user) {
 		return (ur.checkMailUser(user.getEmail()).isEmpty());
+	}
+	
+	public List<User> getAllNoAdministrator() {
+		return ur.getAllNoAdministrator();
 	}
 	
 	public boolean checkUserLogin(String email, String password) {
