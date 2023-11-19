@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mainapp.entity.Moderator;
 import com.mainapp.entity.User;
 
 @Repository
@@ -26,16 +25,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	@Transactional
     @Modifying
-    @Query(value = "UPDATE User SET email = :email, username = :username , password = :password WHERE id= :#{#user.id} ", nativeQuery = true)
-    void updateUser(@Param("user")User user, @Param("email")String email, @Param("username")String username,@Param("password")String password);
+    @Query(value = "UPDATE User SET email = :email, username = :username , password = :password WHERE id = :#{#user.id} ", nativeQuery = true)
+    int updateUser(@Param("user") User user, @Param("email") String email, @Param("username") String username, @Param("password") String password);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE User SET profilePicture='img/Profil/:profilePicture' WHERE id= :#{#user.id}", nativeQuery = true)
-	void updateProfilePicturer(@Param("user") User user, @Param("profilePicture") String profilePicture);
-
-	@Transactional
-	@Modifying
-	@Query(value = "INSERT INTO User (id,email,password,profilePicture,typeUser,username) VALUES (:#{#user.id} , :#{#user.email}, :#{#user.password}, :#{#user.profilePicture}, :#{#user.typeUser}, :#{#user.username})", nativeQuery = true)
-	void addUser(@Param("user") User user);
+	@Query(value = "UPDATE User SET profile_picture = :profilePicture WHERE id = :id", nativeQuery = true)
+	int updateProfilePicture(@Param("id") int id, @Param("profilePicture") String profilePicture);
 }

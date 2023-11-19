@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 public class Customer extends User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private int fidelityPoint;
+	private double fidelityPoint;
 	@Transient
 	@OneToOne
     @JoinColumn(name = "id")
@@ -28,7 +28,7 @@ public class Customer extends User implements Serializable {
 		this.setFidelityPoint(0);
 	}
 
-	public int getFidelityPoint() {
+	public double getFidelityPoint() {
 		return fidelityPoint;
 	}
 

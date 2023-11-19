@@ -9,45 +9,30 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mainapp.entity.Administrator;
 import com.mainapp.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
-	/*@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.id= 2", nativeQuery = true)
-    Customer getCustomer(int idCustomer);
-	
-	Customer findById(int id);
-	
-	@Query("SELECT * FROM Customer c")
-	List<Customer> findAll();*/
-	
-	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email = :#{#customer.email}", nativeQuery = true)
-	Customer checkCustomer(@Param("customer") Customer customer);
-
-	
 	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id", nativeQuery = true)
     List<Customer> getCustomerList();
 	
-	@Query("SELECT c FROM Customer c JOIN User u ON c.id = u.id WHERE u.email= :email")
-	Customer getCustomerByEmail(@Param("email") String email);
+	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email= :email", nativeQuery = true)
+	Customer getCustomer(@Param("email") String email);
 
-	
-	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.id= :idCustomer", nativeQuery = true)
-    Customer getCustomer(@Param("idCustomer")int idCustomer);
-	
-	@Transactional
-    @Modifying
-    @Query(value = "UPDATE Customer SET fidelityPoint = fidelityPoint +:points WHERE id= :#{#customer.id}", nativeQuery = true)
-    void setFidelityPoint(@Param("customer")Customer customer, @Param("points")int points);
-	
+	@Query(value = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.id= :id", nativeQuery = true)
+    Customer getCustomer(@Param("id") int id);
 	
 	@Transactional
     @Modifying
-    @Query(value = "INSERT INTO Customer (id,fidelityPoint) VALUES (:#{#customer.id} , :#{#customer.fidelityPoint})", nativeQuery = true)
-    void addCustomer(@Param("customer")Customer customer);
+    @Query(value = "UPDATE Customer SET fidelity_point = fidelity_point + :points WHERE id= :#{#customer.id}", nativeQuery = true)
+    int addFidelityPoint(@Param("customer") Customer customer, @Param("points") double points);
+
+	@Transactional
+    @Modifying
+    @Query(value = "UPDATE Customer SET fidelity_point = fidelity_point - :points WHERE id= :#{#customer.id}", nativeQuery = true)
+    int useFidelityPoint(@Param("customer") Customer customer, @Param("points") double points);
 	
-	//transfer into moderator
-	//delete customer
+	@Query(value = "SELECT fidelity_point FROM Customer WHERE id= :id", nativeQuery = true)
+	double getFidelityPoint(@Param("id") int id);
 }

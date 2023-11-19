@@ -1,16 +1,14 @@
 package com.mainapp.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mainapp.entity.*;
-/*import com.mainapp.repository.AdministratorRepository;
-import com.mainapp.repository.CustomerRepository;
-import com.mainapp.repository.ModeratorRepository;*/
 import com.mainapp.repository.UserRepository;
 
 import jakarta.servlet.http.Part;
 
-import java.io.*;
+import java.io.File;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -24,67 +22,21 @@ import org.mindrot.jbcrypt.*;
 @Service
 public class UserService {
 	
-	
-	private final UserRepository ur;
-	
-	//@Autowired
-	//private ModeratorRepository mr;
-	
-	//@Autowired
-	//private AdministratorRepository ar;
-	
-	//@Autowired
-	//private CustomerRepository cr;
-	
-	//@Autowired
-	/*public UserService (UserRepository ur, ModeratorRepository mr, CustomerRepository cr, AdministratorRepository ar) {
-		this.ur = ur;
-		this.mr = mr;
-		this.ar = ar;
-		this.cr = cr;
-	}*/
-	
-	@Autowired
-	public UserService(UserRepository ur) {
-		this.ur = ur;
-	}
-	
-	
-	public User getUser(String email) {
-		return ur.getUser(email);
-	}
-	
-	public User getUser(int id) {
-		return ur.getUser(id);
-	}
-	
-	/*public void updateUser(User user, String email, String username, String password) {
-		ur.updateUser(user, email, username, password);
-	}*/
-	
-	public boolean checkUserMail(User user) {
-		return (ur.checkMailUser(user.getEmail()).isEmpty());
-	}
-	
-	public boolean checkUserLogin(String email, String password) {
-		try {
-			boolean isAuthentificated= false;
-			User user = this.getUser(email);
-			isAuthentificated = BCrypt.checkpw(password, user.getPassword());
+	private UserRepository ur;
 
-			return isAuthentificated;
-		}catch(Exception e){
-			return false;
-			}
+	@Autowired
+	public void setDependencies(UserRepository ur) {
+		this.ur = ur;
 	}
-	
-	public void saveUser(User user) {
-		System.out.println("saving");
+
+	public UserRepository getUr() {
+		return ur;
+	}
+
+	public boolean saveUser(User user) {
 		if(checkUserMail(user)) {
-			System.out.println("saved");
 			try {
-				System.out.println(user.getTypeUser());
-				switch (user.getTypeUser()) { //ACHANGER AVEC LE TYPE
+				switch (user.getTypeUser()) {
 					case "Administrator" :
 						Administrator admin = new Administrator(user.getEmail(), user.getPassword(), user.getUsername());
 						ur.save(admin);
@@ -98,15 +50,91 @@ public class UserService {
 						ur.save(moderator);
 						break;
 				}
-		} catch(Exception e) {
-			e.printStackTrace();
+				return true;
+			} catch(Exception e) {
+				return false;
 			}
 		}
-		
+		return false;
 	}
 	
-	public void updateProfilePicture(User user, Part filePart, String profilePicture, String savePath) {
-		
+	public User getUser(String email) {
+		return ur.getUser(email);
+	}
+	
+	public User getUser(int id) {
+		return ur.getUser(id);
+	}
+	
+	public boolean updateUser(User user, String email, String username, String password) {
+		int update = ur.updateUser(user, email, username, password);
+		return (update > 0);
+	}
+	
+	public boolean updateProfilePicture(User user, Part filePart, String profilePicture, String savePath) {
+		try {
+			int userId = user.getId();
+
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(userId + "_"));
+	        
+	        //Delete all the old profile picture of the user
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
+	        
+			//Create profil folder if it does not exist
+			File saveDir = new File(savePath);
+	        if (!saveDir.exists()) {
+	            saveDir.mkdirs();
+	        }
+
+	        //Save the profile picture in the folder
+			String filePath = savePath + File.separator + profilePicture;
+			filePart.write(filePath);
+			
+			profilePicture = "img/Profil/" + profilePicture;
+			int update = ur.updateProfilePicture(userId, profilePicture);
+			return (update > 0);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public boolean deleteProfilePicture(User user, String savePath) {
+		try {
+			int userId = user.getId();
+
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(userId + "_"));
+	        
+	        //Delete all the old profile picture of the user
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
+
+	        int update = ur.updateProfilePicture(userId, "img/profilePicture.png");
+			return (update > 0);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public boolean checkUserMail(User user) {
+		return (ur.checkMailUser(user.getEmail()).isEmpty());
+	}
+	
+	public boolean checkUserLogin(String email, String password) {
+		try {
+			User user = ur.getUser(email);
+			return BCrypt.checkpw(password, user.getPassword());
+		} catch(Exception e){
+			return false;
+		}
 	}
 	
 	public boolean sendMail(String email, String object, String container) {

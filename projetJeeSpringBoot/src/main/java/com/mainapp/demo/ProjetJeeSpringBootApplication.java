@@ -1,8 +1,9 @@
 package com.mainapp.demo;
 
-
+import java.util.Date;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.mainapp.entity.*;
 import com.mainapp.service.*;
+
+@SuppressWarnings("deprecation")
+
 @SpringBootApplication(scanBasePackages = "com.mainapp")
 @EnableJpaRepositories(basePackages = "com.mainapp")
 @EntityScan(basePackages = "com.mainapp.entity")
@@ -19,44 +23,111 @@ public class ProjetJeeSpringBootApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetJeeSpringBootApplication.class, args);
-		
-		//ModeratorRepository mr = new ModeratorRepos;
-		
-		//System.out.println(UserService.getUser(1));
-		
-		
 	}
 
-	@Bean
-    public CommandLineRunner demo(TestService ts, UserService us) {
+    @Bean
+    CommandLineRunner demo(UserService us, CustomerService cs, ModeratorService ms, ProductService ps, CreditCardService ccs, BasketService bs) {
         return (args) -> {
-        	try {
-        		System.out.println("TEST");
+        	try {              
+        		// Créer un administrateur
+                Administrator admin = new Administrator("admin@email.com",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
+                us.saveUser(admin);
                 
+                // Créer et modifier un modo
+        		Moderator moderator = new Moderator("mailModo", BCrypt.hashpw("password", BCrypt.gensalt(12)), "modo");
+        		us.saveUser(moderator);
+        		Moderator modo = ms.getModerator("mailModo");
+        		System.out.println(modo.getEmail());
+        		System.out.println(ms.modifyRight(modo, "add_product", true));
+        		
+        		moderator = new Moderator("nie", BCrypt.hashpw("password", BCrypt.gensalt(12)), "nie");
+        		System.out.println(us.saveUser(moderator));
+        		modo = ms.getModerator("nie");
+        		
+        		User user = us.getUser("mailAdmin");
+        		
                 // Créer un client
-                Customer customer = new Customer("customer@email.com", "password", "CustomerUser");
-                us.saveUser(customer);
-                
-                User user = us.getUser(1);
-                System.out.println(user.getEmail());
-                
-             	//Ajouter un test
-        		Test test = new Test("test1",10.1);		
-        		ts.saveTest(test);
-        		        		
-        		//Trouver tous les tests
-        		List<Test> tests = ts.getAllTest();
+        		Customer customer = new Customer("mailCustomer", BCrypt.hashpw("password", BCrypt.gensalt(12)), "chris");
+        		System.out.println(us.saveUser(customer));
+        		Customer cust = cs.getCustomer("mailCustomer");
+        		List<Customer> liste = cs.getCustomerList();
         		
-        		//trouver 1 test
-        		Test test1 = ts.findById(1);
+        		//Modifier un client
+        		System.out.println(cust.getUsername());
+        		System.out.println(liste.get(0).getUsername());
+        		System.out.println(cs.setFidelityPoint(cust, 10));
+        		System.out.println(cs.setFidelityPoint(cust, -5));
+                
+        		//Créer une carte bancaire
+				CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20));
+        		card.setCredit(1000);
+        		System.out.println(ccs.saveCreditCard(card));
+                
+        		//Créer et modifier un produit
+        		Product product = new Product("DragonBall Tome 1", 7.95, 101, "img/products/db_1.jpg", user);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Naruto Tome 1", 7.95, 100, "img/products/naruto_1.jpg", user);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("One Piece Tome 1", 7.95, 100, "img/products/op_1.jpg", user);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("L'Attaque des Titans Tome 1", 5.95, 17, "img/products/snk_1.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("L'Attaque des Titans Tome 30", 6.55, 9, "img/products/snk_30.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Vinland Saga Tome 6", 6.55, 12, "img/products/vs_6.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Hunter X Hunter Tome 37", 6.99, 19, "img/products/hxh_37.jpg",modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Jujutsu Kaisen Tome 0", 7.99, 4, "img/products/jjk_0.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		moderator = new Moderator("UnLibraire", BCrypt.hashpw("password", BCrypt.gensalt(12)), "UnLibraire");
+        		System.out.println(us.saveUser(moderator));
+        		modo = ms.getModerator("UnLibraire");
+        		
+        		product = new Product("My Hero Academia Tome 25", 6.95, 13, "img/products/mha_25.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Hunter X Hunter Tome 1", 6.90, 11, "img/products/hxh_1.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Fire Punch Tome 1", 6.90, 7, "img/products/fp_1.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Blue Lock Tome 1", 6.90, 8, "img/products/bl_1.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		product = new Product("Chainsaw Man Tome 14", 7.00, 22, "img/products/csm_14.jpg", modo);
+        		System.out.println(ps.addProduct(product));
+        		
+        		//Créer un panier
+        		Basket basket = new Basket(product, 2, cust);
 
-        		//Update un test
-        		ts.updateTest(test, 9, "NOOOM");
-        		System.out.println(ts.findById(2).getName()+" ---- "+ts.findById(2).getPrice());
+        		//Modifier et payer un panier
+        		System.out.println(bs.addOrder(basket, cust.getId(), 1));
+        		System.out.println(bs.updateQuantity(basket.getId(), 2));
+        		System.out.println(bs.confirmOrder(cust.getId()));
+        		if (ccs.checkCreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20))) {
+        			if (ccs.checkBalance(123, bs.totalPrice(cust.getId()))) {
+        				System.out.println(bs.finalizePaiement(cust.getId(), 123, bs.totalPrice(cust.getId()),"testMain"));
+        			}
+        		}
         		
-        		
-        		//s.deleteTest(1);
-        	}catch(Exception e) {
+        		/*cs.transferIntoModerator(cust);
+        		ms.transferIntoCustomer(modo);
+        		System.out.println(bs.deleteOrder(basket.getId()));
+        		System.out.println(ps.deleteProduct(product.getId()));
+        		System.out.println(ms.deleteModerator(modo));
+        		System.out.println(cs.deleteCustomer(cust));		
+        		System.out.println(ccs.deleteCreditCard(card.getCardNumber()));*/
+        	} catch(Exception e) {
         		e.printStackTrace();
         		}
         	
