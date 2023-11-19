@@ -19,8 +19,8 @@
         <div class="centered">
             <% 
             if (request.getAttribute("productId") != null) {
-                ProductDao productDao = new ProductDao(HibernateUtil.getSessionFactory());
-                Product product = productDao.getProduct((int) request.getAttribute("productId"));
+            	ProductService ps = (ProductService) session.getAttribute("ProductService");
+                Product product = ps.getProduct((int) request.getAttribute("productId"));
             %>
                 <div class="card centered" style="width: 40rem;">
                     <img src="<%= product.getImg() %>" class="card-img-top">

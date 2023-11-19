@@ -38,12 +38,12 @@ if (isLogged) {
 					<p class="card-text">Username : <%= loginUser.getUsername() %> <i class="fas fa-edit" onclick="newInfo('username');"></i></p>
 					<p class="card-text">Password : ********* <i class="fas fa-edit" onclick="newInfo('password');"></i></p>
 					<% if (loginUser.getTypeUser().equals("Customer")) {
-						CustomerDao customerDao = new CustomerDao(HibernateUtil.getSessionFactory());
-						Customer customer = customerDao.getCustomer(loginUser.getId());%>
+						CustomerService cs = (CustomerService) session.getAttribute("CustomerService");
+						Customer customer = cs.getCustomer(loginUser.getId());%>
 						<p class="card-text">Fidelity Points : <%= customer.getFidelityPoint() %></p>
 					<% } else if (loginUser.getTypeUser().equals("Moderator")) {
-						ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
-						Moderator moderator = moderatorDao.getModerator(loginUser.getId());%>
+						ModeratorService ms = (ModeratorService) session.getAttribute("ModeratorService");
+						Moderator moderator = ms.getModerator(loginUser.getId());%>
 						<p class="card-text">Can add product : <%= moderator.canAddProduct() %></p>
 						<p class="card-text">Can modify product : <%= moderator.canModifyProduct() %></p>
 						<p class="card-text">Can delete product : <%= moderator.canDeleteProduct() %></p>

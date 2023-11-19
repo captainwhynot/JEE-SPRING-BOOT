@@ -46,8 +46,8 @@
                 </div>
             <% } else if (request.getAttribute("sellerId") != null) {
                 int sellerId = (int) request.getAttribute("sellerId");
-                UserDao userDao = new UserDao(HibernateUtil.getSessionFactory());
-                User user = userDao.getUser(sellerId);%>
+                UserService us = (UserService) session.getAttribute("UserService");
+                User user = us.getUser(sellerId);%>
                 <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for <%= user.getUsername() %>'s products.
                 </div>
             <% } else { %>

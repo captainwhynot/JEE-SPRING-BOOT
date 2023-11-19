@@ -8,8 +8,8 @@
 boolean canAddProduct = false;
 if (isLogged) {
 	if (loginUser.getTypeUser().equals("Moderator")) {
-		ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
-		Moderator moderator = moderatorDao.getModerator(loginUser.getId());
+		ModeratorService ms = (ModeratorService) session.getAttribute("ModeratorService");
+		Moderator moderator = ms.getModerator(loginUser.getId());
 		canAddProduct = moderator.canAddProduct();
 	}
 	if (loginUser.getTypeUser().equals("Administrator")) {

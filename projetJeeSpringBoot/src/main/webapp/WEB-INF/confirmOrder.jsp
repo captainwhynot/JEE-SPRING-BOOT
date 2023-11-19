@@ -54,8 +54,8 @@
                         <tr>
 	                        <td colspan=6>Discount</td>
 		                        <% 
-		                        CustomerDao customerDao = new CustomerDao(HibernateUtil.getSessionFactory());
-	                        	Customer customer = customerDao.getCustomer(loginUser.getId());
+		                        CustomerService cs = (CustomerService) session.getAttribute("CustomerService");
+	                        	Customer customer = cs.getCustomer(loginUser.getId());
 	                        	double fidelityPoint = customer.getFidelityPoint();
 	                        	double discount = (fidelityPoint > totalOrderPrice) ? totalOrderPrice : fidelityPoint;
                                 String fidelityPointString = String.format("%.2f", fidelityPoint);

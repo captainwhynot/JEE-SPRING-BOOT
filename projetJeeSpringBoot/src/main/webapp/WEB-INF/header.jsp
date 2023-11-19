@@ -10,6 +10,7 @@
 <%
 User loginUser = (User) session.getAttribute("user");
 boolean isLogged = loginUser != null && loginUser.getId() != 0;
+System.out.println(isLogged);
 %>
 <head>
 <title>MANGASTORE</title>
@@ -74,12 +75,12 @@ boolean isLogged = loginUser != null && loginUser.getId() != 0;
 						<input type="text" id="search" name="search"
 							placeholder="Search..."> <span class="icon"> <i
 							class="uil uil-search search-icon"></i> 
-							<% //if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
+							<% if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
 								<a href="./History"><i><img src="img/historique.png"
 										alt="" width="24px"></i></a>
 								<a id="decal2" href="./Basket"><i><img
 										src="img/shopping-cart.png" alt="" width="32px"></i></a> 
-							<% //} %>
+							<% } %>
 						</span> <i class="uil uil-times close-icon"></i>
 					</form>
 				</div>
@@ -105,10 +106,10 @@ boolean isLogged = loginUser != null && loginUser.getId() != 0;
 					</li>
 					<li class="nav-item"><a class="nav-link" href="./Market">Market</a>
 					</li>
-					<% //if (!isLogged) { %>
+					<% if (!isLogged) { %>
 						<li><a class="nav-link" aria-current="page" href="./Login">Login</a></li>
-					<% //} else { %>
-					<% //if (loginUser.getTypeUser().equals("Administrator")) { %>
+					<% } else { %>
+					<% if (loginUser.getTypeUser().equals("Administrator")) { %>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#"
 							id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
@@ -130,9 +131,9 @@ boolean isLogged = loginUser != null && loginUser.getId() != 0;
 								<a class="dropdown-item" href="./ManageProduct">Manage
 									Product</a> <a class="dropdown-item" href="./AddProduct">Add Product</a>
 							</div></li>
-					<% /*} else if (loginUser.getTypeUser().equals("Moderator")) {
-						ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
-						Moderator moderator = moderatorDao.getModerator(loginUser.getId());*/
+					<% } else if (loginUser.getTypeUser().equals("Moderator")) {
+						ModeratorService ms = (ModeratorService) session.getAttribute("ModeratorService");
+						Moderator moderator = ms.getModerator(loginUser.getId());
 					%>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#"
@@ -140,18 +141,18 @@ boolean isLogged = loginUser != null && loginUser.getId() != 0;
 							aria-haspopup="true" aria-expanded="false">Products</a>
 							<div class="dropdown-menu"
 								aria-labelledby="navbarDropdownMenuLink">
-								<% //if (moderator.canModifyProduct() || moderator.canDeleteProduct()) { %>
+								<% if (moderator.canModifyProduct() || moderator.canDeleteProduct()) { %>
 								<a class="dropdown-item" href="./ManageProduct">Manage
 									Product</a>
-								<% //} if (moderator.canAddProduct()) { %>
+								<% } if (moderator.canAddProduct()) { %>
 									<a class="dropdown-item" href="./AddProduct">Add Product</a>
-								<% //} %>
+								<% } %>
 							</div>
 						</li>
-					<% //} %>
+					<% } %>
 					<li><a class="nav-link" aria-current="page" href="./Profil">Profil</a></li>
 					<li><a class="nav-link" aria-current="page" href="./Logout">Logout</a></li>
-					<% //} %>
+					<% } %>
 				</ul>
 			</div>
 		</div>
