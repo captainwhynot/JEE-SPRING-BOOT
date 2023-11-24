@@ -76,8 +76,7 @@ public class AddModeratorController {
         			}
         		}
         	}
-			model.addAttribute("showAlert", "<script>showAlert('Transfer completed.', 'success', './AddModerator')</script>");
-			//model.addAttribute("showAlert", "<script>showAlert('Transfer completed.', 'success', './ManageModerator')</script>");
+			model.addAttribute("showAlert", "<script>showAlert('Transfer completed.', 'success', './ManageModerator')</script>");
         }
 		return doGet(model);
     }

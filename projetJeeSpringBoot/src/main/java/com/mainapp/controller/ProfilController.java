@@ -11,20 +11,23 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mainapp.entity.User;
+import com.mainapp.service.CustomerService;
 import com.mainapp.service.UserService;
 
 import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/Profil")
-@SessionAttributes({"user", "showAlert", "moderatorService", "action", "profilInfo", "newValueInput", "passwordInput", "imgFile"})
+@SessionAttributes({"user", "showAlert", "moderatorService", "customerService", "action", "profilInfo", "newValueInput", "passwordInput", "imgFile"})
 public class ProfilController {
 
 	private UserService userService;
+	private CustomerService customerService;
 	private ServletContext servletContext;
 	
-	public ProfilController(UserService us, ServletContext servletContext) {
+	public ProfilController(UserService us, CustomerService cs, ServletContext servletContext) {
 		this.userService = us;
+		this.customerService = cs;
 		this.servletContext = servletContext;
 	}
     
@@ -33,6 +36,7 @@ public class ProfilController {
 		if (!IndexController.isLogged(model)) {
 			return "redirect:/Index";
 		}
+		model.addAttribute("customerService", customerService);
         return "profil";
     }
 
@@ -88,6 +92,6 @@ public class ProfilController {
    				}
    			}
 		}
-		return "profil";
+		return doGet(model);
     }
 }

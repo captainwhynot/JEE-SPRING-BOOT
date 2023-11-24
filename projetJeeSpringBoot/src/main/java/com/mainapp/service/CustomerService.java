@@ -60,7 +60,6 @@ public class CustomerService {
 	public boolean deleteCustomer(Customer customer) {
 		try {
 	        User user = customer.getUser();
-	        customer.setUser(null);
 	        List<Basket> baskets = customer.getBaskets();
 
 	        //Delete the customer & the user & the customer's basket

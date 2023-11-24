@@ -22,6 +22,9 @@ public interface BasketRepository extends JpaRepository<Basket, Integer> {
 
     @Query(value = "SELECT * FROM Basket WHERE customer_id = :customerId AND purchase_date IS NULL", nativeQuery = true)
     List<Basket> getBasketList(@Param("customerId") int customerId);
+    
+    @Query(value = "SELECT * FROM Basket WHERE product_id = :productId", nativeQuery = true)
+    List<Basket> getBasketListProduct(@Param("productId") int productId);
 
     @Query(value = "SELECT * FROM Basket WHERE id = :id", nativeQuery = true)
     Basket getBasket(@Param("id") int id);
@@ -42,4 +45,9 @@ public interface BasketRepository extends JpaRepository<Basket, Integer> {
     
     @Query(value = "SELECT * FROM Basket WHERE customer_id = :id AND purchase_date IS NOT NULL;", nativeQuery = true)
     List<Basket> getHistoryList(@Param("id") int id);
+    
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Basket WHERE id = :id")
+    void deleteBasket(@Param("id") int id);
 }

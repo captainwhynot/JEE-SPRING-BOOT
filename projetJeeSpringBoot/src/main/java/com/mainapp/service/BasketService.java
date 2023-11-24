@@ -37,7 +37,7 @@ public class BasketService {
 			Basket oldBasket = br.getBasket(customerId, basket.getProduct().getId());
 			//If the product is already in the basket, add quantity if there is enough stock
 			if (checkStock(oldBasket.getId(), oldBasket.getQuantity()+quantity)) {
-				return updateQuantity(oldBasket.getId(), quantity);
+				return updateQuantity(oldBasket.getId(), oldBasket.getQuantity()+quantity);
 			} else {
 				return false;
 			}
@@ -69,6 +69,10 @@ public class BasketService {
 	
 	public List<Basket> getBasketList(int customerId) {
 		return br.getBasketList(customerId);
+	}
+
+	public List<Basket> getBasketListProduct(int productId) {
+		return br.getBasketListProduct(productId);
 	}
 	
 	public List<Basket> getHistoryList(int customerId) {
@@ -139,7 +143,7 @@ public class BasketService {
 
 	public boolean deleteOrder(int id) {
 		try {
-			br.delete(this.getBasket(id));
+			br.deleteBasket(id);
 			return true;
 		} catch (Exception e) {
 			return false;

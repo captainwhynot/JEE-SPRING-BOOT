@@ -1,11 +1,8 @@
 package com.mainapp.service;
 import java.util.List;
 
-import org.hibernate.Hibernate;
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mainapp.entity.Customer;
 import com.mainapp.entity.Moderator;
@@ -72,19 +69,18 @@ public class ModeratorService {
 		return (delete && save);
 	}
 	
-	@Transactional
 	public boolean deleteModerator(Moderator moderator, String savePath) {
 		try {
 	        User user = us.getUser(moderator.getId());
-	        List<Product> products = user.getProducts();
+	        List<Product> products = ps.getSellerProducts(moderator.getId());
 
 	        //Delete the moderator & the user & the moderator's products
+	        for (Product product : products) {
+		        ps.deleteProduct(product.getId(), savePath);
+	        }
 	        mr.delete(moderator);
 	        if (user != null) {
 		        us.getUr().delete(user);
-	        }
-	        for (Product product : products) {
-		        ps.deleteProduct(product.getId(), savePath);
 	        }
 	        return true;
 	    } catch (Exception e) {

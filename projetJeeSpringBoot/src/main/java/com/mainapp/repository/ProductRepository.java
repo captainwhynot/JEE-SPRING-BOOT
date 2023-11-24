@@ -37,4 +37,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
     @Modifying
     @Query(value = "UPDATE Product SET stock = :stock WHERE id = :id", nativeQuery = true)
 	int updateStock(@Param("id") int id, @Param("stock") int stock);
+	
+	@Transactional
+    @Modifying
+    @Query("DELETE FROM Product WHERE id = :id")
+    void deleteProduct(@Param("id") int id);
 }

@@ -99,8 +99,7 @@ public class ProductService {
 	
 	public boolean deleteProduct(int id, String savePath) {
 		try {
-			Product product = this.getProduct(id);
-            List<Basket> baskets = product.getBaskets();
+            List<Basket> baskets = bs.getBasketListProduct(id);
             
 	        File imgDir = new File(savePath);
 	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(id + "_"));
@@ -112,10 +111,10 @@ public class ProductService {
 	            }
 	        }
             //Delete the product and the product's reference in all basket using it.
-	        pr.delete(product);
 	        for (Basket basket : baskets) {
-	            bs.getBr().delete(basket);
+	            bs.deleteOrder(basket.getId());
 	        }
+	        pr.deleteProduct(id);
 	        return true;
 	    } catch (Exception e) {
 	        return false;
