@@ -107,14 +107,17 @@ if (canModifyProduct || canDeleteProduct) {
 	    	//Delete the product
 	    	$.ajax({
 	            type: "POST",
-	            url: "ManageProduct",
-	            data: { productId: productId, action: "deleteProduct" },
+	            url: "ManageProduct/DeleteProduct",
+	            data: { productId: productId },
 	            dataType: "json",
 	            success: function (response) {
-	            	showAlert("Success : " + response.status, "success", "./ManageProduct");
 	            },
 	            error: function (jqXHR, textStatus, errorThrown) {
-	            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseJSON.error, "error", "./ManageProduct");
+	            	if (jqXHR.status == 200) {
+	            		showAlert("Success : " + jqXHR.responseText, "success", "./ManageProduct");
+	            	} else {
+	            		showAlert("Error " + jqXHR.status + ": " + jqXHR.responseText, "error", "./ManageProduct");
+	            	}
 	            }
 	        });
 	    }

@@ -1,11 +1,9 @@
-Controller :
-- AddModeratorController.java -> suppression (pour transfere) ne marche pas
-- BasketController.java -> requete ajax pour basket.jsp
-- ManageProductController.java -> suppression produit cassé (ajax)
+Product :
+- Taille de l'image/card à modifier.
 
-Service :
-- Supprimer les images dans le dossier d'un produit qu'on supprime
-- Les suppressions d'entité ne marchent pas
+
+Header :
+- Enlever animation barre de recherche quand on clique sur le panier
 
 
 - Javadoc en anglais

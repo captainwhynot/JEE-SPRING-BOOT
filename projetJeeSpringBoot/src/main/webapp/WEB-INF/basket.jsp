@@ -66,25 +66,28 @@
 	    function checkStock(input) {
 	        var oldQuantity = input.closest('tr').querySelector('.oldQuantity').value;
 	  	 	var quantity = input.value;
+	        var price = input.closest('tr').querySelector('.price').textContent;
 	  	 	//If the quantity is negative, put the old quantity value
 	    	if (quantity < 0) {
 	    		input.value = oldQuantity;
+	    		quantity = oldQuantity;
 	    	}
 	    	else {
-		        var price = input.closest('tr').querySelector('.price').textContent;
 		        var basketId = input.closest('tr').querySelector('.id').textContent;
 				//Check if there is enough stock to add quantity
 		        $.ajax({
 		            type: "POST",
-		            url: "Basket",
-		            data: { basketId: basketId, quantity: quantity, action: "checkStock" },
+		            url: "Basket/UpdateQuantity",
+		            data: { basketId: basketId, quantity: quantity},
 		            dataType: "json",
 		            success: function (response) {
 		            },
 		            error: function (jqXHR, textStatus, errorThrown) {
-		            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseJSON.status, "error", "./Basket");
-		            	input.value = oldQuantity;
-						quantity = oldQuantity;
+		            	if (jqXHR.status != 200) {
+			            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseText, "error", "./Basket");
+			            	input.value = oldQuantity;
+							quantity = oldQuantity;
+		            	}
 		            }
 		        });
 	    	}

@@ -60,11 +60,7 @@ public class BasketController {
         }    	
 		if (action != null) {
 			User loginUser = IndexController.loginUser(model);
-			if (action.equals("checkStock")) {
-				//Check the stock to update quantity
-				updateQuantity(basketId, quantity, model);
-				return "basket";
-			} else if (action.equals("confirmOrder")) {
+			if (action.equals("confirmOrder")) {
 				//Confirm the basket to pay
 				List<Basket> basketList = basketService.getBasketList(loginUser.getId());
 				model.addAttribute("basketList", basketList);
@@ -158,21 +154,24 @@ public class BasketController {
 		}
     }
 
-    public ResponseEntity<String> updateQuantity(int basketId, int quantity, Model model) {
+    @PostMapping("/UpdateQuantity")
+    public ResponseEntity<String> updateQuantity(@RequestParam("basketId") Integer basketId,
+    		@RequestParam("quantity") Integer quantity, 
+    		Model model) {
     	try {
 			Basket basket = basketService.getBasket(basketId);
-			
+
 			if (basketService.checkStock(basketId, quantity)) {
-				if (basketService.updateQuantity(basket.getId(), quantity - basket.getQuantity())) {
-					return ResponseEntity.ok("Stock updated successfully"); //OK 200
+				if (basketService.updateQuantity(basket.getId(), quantity)) {
+					return ResponseEntity.ok("Stock updated successfully."); //OK 200
 				} else {
-					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update stock"); //ERROR 500
+					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update stock."); //ERROR 500
 				}
 			} else {
-				return ResponseEntity.badRequest().body("Not enough stock"); //BAD REQUEST 400
+				return ResponseEntity.badRequest().body("Not enough stock."); //BAD REQUEST 400
 			}
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error"); //ERROR 500
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update stock."); //ERROR 500
 		}
     }
 }

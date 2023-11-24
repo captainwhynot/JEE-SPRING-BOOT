@@ -68,12 +68,8 @@ public class ManageProductController {
     	if(!IndexController.isLogged(model)) {
         	return "redirect:/Index";
         }
-    	System.out.println("action : " + action);
         if (action != null) {
-          	if (action.equals("deleteProduct")) {
-            	System.out.println("productId : " + productId);
-          		this.deleteProduct(productId, model);
-          	} else if (action.equals("updateProduct")){
+          	if (action.equals("updateProduct")){
           		  //Update product's informations
                   List<String> fileNameString = new ArrayList<>();
                   for (MultipartFile imgFile : imgFileArray) {
@@ -126,13 +122,14 @@ public class ManageProductController {
         return "manageProduct";
     }    
     
-    public ResponseEntity<String> deleteProduct(int productId, Model model) {
+    @PostMapping("/DeleteProduct")
+    public ResponseEntity<String> deleteProduct(@RequestParam("productId") int productId, Model model) {
         try {
   	        String savePath = this.servletContext.getRealPath("/img/Product");
             if (productService.deleteProduct(productId, savePath)) {
             	return ResponseEntity.ok("Product deleted successfully.");
             } else {
-            	return ResponseEntity.ok("Failed to delete product.");
+            	return ResponseEntity.badRequest().body("Failed to delete product.");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete product.");
