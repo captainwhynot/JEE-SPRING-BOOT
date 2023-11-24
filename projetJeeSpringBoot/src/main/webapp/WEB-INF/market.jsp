@@ -35,8 +35,7 @@
                     <input type="text" class="form-control" id="search" name="search" placeholder="Search..." required>
                     <button type="submit" id="SR">Search</button>
                 </div>
-            </form>        
-
+            </form>
             <% 
             List<Product> productList = (List<Product>) request.getAttribute("productList");
             int size = productList.size();
@@ -44,12 +43,14 @@
             %>
                 <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for "<%= request.getAttribute("search") %>".
                 </div>
+				<% session.removeAttribute("search"); %>
             <% } else if (request.getAttribute("sellerId") != null) {
                 int sellerId = (int) request.getAttribute("sellerId");
-                UserService us = (UserService) session.getAttribute("UserService");
+                UserService us = (UserService) request.getAttribute("userService");
                 User user = us.getUser(sellerId);%>
                 <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for <%= user.getUsername() %>'s products.
                 </div>
+                <% session.removeAttribute("sellerId"); %>
             <% } else { %>
                 <div> All products
                 </div>

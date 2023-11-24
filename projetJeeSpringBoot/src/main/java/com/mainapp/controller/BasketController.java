@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/Basket")
-@SessionAttributes({"user", "showAlert", "basketList", "basketId", "quantity", "action", "cardNumber", "cvv", "expirationDate"})
+@SessionAttributes({"user", "showAlert", "customerService", "basketList", "basketId", "quantity", "action", "cardNumber", "cvv", "expirationDate"})
 public class BasketController {
 
 	private CreditCardService creditCardService;
@@ -49,10 +49,10 @@ public class BasketController {
 
     @PostMapping
     public String doPost(@RequestParam("action") String action,
-    		@RequestParam(value = "basketId", required = false) int basketId,
-    		@RequestParam(value = "quantity", required = false) int quantity,
-    		@RequestParam(value = "cardNumber", required = false) int cardNumber,
-    		@RequestParam(value = "cvv", required = false) int cvv,
+    		@RequestParam(value = "basketId", required = false) Integer basketId,
+    		@RequestParam(value = "quantity", required = false) Integer quantity,
+    		@RequestParam(value = "cardNumber", required = false) Integer cardNumber,
+    		@RequestParam(value = "cvv", required = false) Integer cvv,
     		@RequestParam(value = "expirationDate", required = false) String expirationDateString,
     		Model model) {
     	if(!IndexController.isLogged(model)) {
@@ -80,6 +80,7 @@ public class BasketController {
 						model.addAttribute("showAlert", "<script>showAlert('Your basket is empty.', 'warning', './Basket');</script>");
 						return "basket";
 					} else {
+						model.addAttribute("customerService",customerService);
 						return "confirmOrder";
 					}
 				}
@@ -163,15 +164,15 @@ public class BasketController {
 			
 			if (basketService.checkStock(basketId, quantity)) {
 				if (basketService.updateQuantity(basket.getId(), quantity - basket.getQuantity())) {
-					return ResponseEntity.ok(""); //OK 200
+					return ResponseEntity.ok("Stock updated successfully"); //OK 200
 				} else {
-					return ResponseEntity.ok(""); //UPDATE FAILED
+					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update stock"); //ERROR 500
 				}
 			} else {
-				return ResponseEntity.ok(""); //BAD REQUEST 400
+				return ResponseEntity.badRequest().body("Not enough stock"); //BAD REQUEST 400
 			}
 		} catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(""); //ERROR 500
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error"); //ERROR 500
 		}
     }
 }

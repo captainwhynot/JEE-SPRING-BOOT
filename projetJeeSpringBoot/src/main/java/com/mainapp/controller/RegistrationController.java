@@ -15,7 +15,7 @@ import com.mainapp.service.UserService;
 
 @Controller
 @RequestMapping("/Registration")
-@SessionAttributes({"email", "password", "username", "user", "showAlert"})
+@SessionAttributes({"user", "moderatorService", "showAlert", "email", "password", "username"})
 public class RegistrationController {
 
 	private UserService userService;

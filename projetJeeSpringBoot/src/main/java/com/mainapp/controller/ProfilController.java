@@ -17,7 +17,7 @@ import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/Profil")
-@SessionAttributes({"user", "showAlert", "action", "profilInfo", "newValueInput", "passwordInput", "imgFile"})
+@SessionAttributes({"user", "showAlert", "moderatorService", "action", "profilInfo", "newValueInput", "passwordInput", "imgFile"})
 public class ProfilController {
 
 	private UserService userService;

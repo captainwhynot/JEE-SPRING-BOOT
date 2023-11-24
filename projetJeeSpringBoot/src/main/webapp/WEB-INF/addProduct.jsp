@@ -8,7 +8,7 @@
 boolean canAddProduct = false;
 if (isLogged) {
 	if (loginUser.getTypeUser().equals("Moderator")) {
-		ModeratorService ms = (ModeratorService) session.getAttribute("ModeratorService");
+		ModeratorService ms = (ModeratorService) session.getAttribute("moderatorService");
 		Moderator moderator = ms.getModerator(loginUser.getId());
 		canAddProduct = moderator.canAddProduct();
 	}

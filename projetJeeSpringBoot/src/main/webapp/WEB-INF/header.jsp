@@ -131,7 +131,7 @@ boolean isLogged = loginUser != null && loginUser.getId() != 0;
 									Product</a> <a class="dropdown-item" href="./AddProduct">Add Product</a>
 							</div></li>
 					<% } else if (loginUser.getTypeUser().equals("Moderator")) {
-						ModeratorService ms = (ModeratorService) session.getAttribute("ModeratorService");
+						ModeratorService ms = (ModeratorService) session.getAttribute("moderatorService");
 						Moderator moderator = ms.getModerator(loginUser.getId());
 					%>
 						<li class="nav-item dropdown"><a

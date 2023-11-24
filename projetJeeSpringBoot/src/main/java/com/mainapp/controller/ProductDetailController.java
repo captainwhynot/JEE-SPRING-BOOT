@@ -18,7 +18,7 @@ import com.mainapp.service.ProductService;
 
 @Controller
 @RequestMapping("/Product")
-@SessionAttributes({"user", "showAlert", "productId", "action"})
+@SessionAttributes({"user", "showAlert", "moderatorService", "productService", "productId", "action"})
 public class ProductDetailController {
 
 	private ProductService productService;
@@ -35,6 +35,7 @@ public class ProductDetailController {
     public String doGet(@RequestParam("productId") Integer productId,
     		Model model) {
 		model.addAttribute("productId", productId);
+		model.addAttribute("productService", productService);
         return "product";
     }
 

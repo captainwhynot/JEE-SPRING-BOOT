@@ -8,17 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.mainapp.entity.User;
+import com.mainapp.service.ModeratorService;
 import com.mainapp.service.UserService;
 
 @Controller
 @RequestMapping("/Login")
-@SessionAttributes({"email", "password", "user", "showAlert"})
+@SessionAttributes({"user", "moderatorService", "showAlert", "email", "password"})
 public class LoginController {
 
 	private UserService userService;
+	private ModeratorService moderatorService;
 	
-	public LoginController(UserService us) {
+	public LoginController(UserService us, ModeratorService ms) {
 		this.userService = us;
+		this.moderatorService = ms;
 	}
     
 	@GetMapping
@@ -34,6 +37,7 @@ public class LoginController {
 		if (userService.checkUserLogin(email, password)) {
 			User user = userService.getUser(email);
 			model.addAttribute("user", user);
+			model.addAttribute("moderatorService", moderatorService);
 			return "redirect:/Index";
 		} else {
 			model.addAttribute("showAlert", "<script>showAlert('Invalid identifiants.', 'error', '')</script>");

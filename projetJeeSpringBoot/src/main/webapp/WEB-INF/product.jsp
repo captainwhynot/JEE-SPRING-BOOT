@@ -19,7 +19,7 @@
         <div class="centered">
             <% 
             if (request.getAttribute("productId") != null) {
-            	ProductService ps = (ProductService) session.getAttribute("ProductService");
+            	ProductService ps = (ProductService) session.getAttribute("productService");
                 Product product = ps.getProduct((int) request.getAttribute("productId"));
             %>
                 <div class="card centered" style="width: 40rem;">

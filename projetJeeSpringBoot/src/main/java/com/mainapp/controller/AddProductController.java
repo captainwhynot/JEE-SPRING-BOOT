@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mainapp.entity.*;
+import com.mainapp.service.ModeratorService;
 import com.mainapp.service.ProductService;
 import com.mainapp.service.UserService;
 
@@ -17,16 +18,18 @@ import jakarta.servlet.ServletContext;
 
 @Controller
 @RequestMapping("/AddProduct")
-@SessionAttributes({"name", "price", "stock", "sellerId", "user", "showAlert"})
+@SessionAttributes({"user", "moderatorService", "showAlert", "name", "price", "stock", "sellerId"})
 public class AddProductController {
 
 	private UserService userService;
 	private ProductService productService;
+	private ModeratorService moderatorService;
 	private ServletContext servletContext;
 
-	public AddProductController(UserService us, ProductService ps, ServletContext servletContext) {
+	public AddProductController(UserService us, ProductService ps, ModeratorService ms, ServletContext servletContext) {
 		this.userService = us;
 		this.productService = ps;
+		this.moderatorService = ms;
 		this.servletContext = servletContext;
 	}
     @GetMapping
@@ -34,6 +37,7 @@ public class AddProductController {
     	if(!IndexController.isLogged(model)) {
         	return "redirect:/Index";
         }
+	    model.addAttribute("moderatorService", moderatorService);
         return "addProduct";
     }
 

@@ -87,11 +87,11 @@
 						quantity = oldQuantity;
 		            }
 		        });
-				//Update the total price of the row according the quantity
-		        input.closest('tr').querySelector('.totalPrice').textContent = (price * quantity).toFixed(2);
-				//Update the total price of the order
-		        totalPrice();
 	    	}
+			//Update the total price of the row according the quantity
+	        input.closest('tr').querySelector('.totalPrice').textContent = (price * quantity).toFixed(2);
+			//Update the total price of the order
+	        totalPrice();
     	}
 	    
 	    function totalPrice() {

@@ -23,9 +23,10 @@
 	                </tr>
 	            </thead>
 	            <tbody>
-	                <% List<Basket> basketList = (List<Basket>) request.getAttribute("basketList");
-	                    for (Basket basket : basketList) {
-	                %>
+                <% 
+                List<Basket> basketList = (List<Basket>) request.getAttribute("basketList");
+                for (Basket basket : basketList) {
+                %>
                     <tr>
                     	<td><%= basket.getId() %></td>
                         <td><form method="POST" action="Product" class="mr-2">
@@ -54,7 +55,7 @@
                         %>
                         <td><%= formattedDate %></td>
                     </tr>
-                <% } %>
+               	<% } %>
             	</tbody>
         	</table>
         	<input type="hidden" name="action" value="confirmOrder">

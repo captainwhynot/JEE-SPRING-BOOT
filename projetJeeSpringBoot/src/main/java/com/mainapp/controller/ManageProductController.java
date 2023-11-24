@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mainapp.entity.Product;
 import com.mainapp.entity.User;
+import com.mainapp.service.ModeratorService;
 import com.mainapp.service.ProductService;
 
 import jakarta.servlet.ServletContext;
@@ -23,14 +24,16 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/ManageProduct")
-@SessionAttributes({"user", "showAlert", "productList", "action", "productId", "img", "name", "price", "stock", "imgFile"})
+@SessionAttributes({"user", "showAlert", "moderatorService", "productList", "action", "productId", "img", "name", "price", "stock", "imgFile"})
 public class ManageProductController {
 
 	private ProductService productService;
+	private ModeratorService moderatorService;
 	private ServletContext servletContext;
 	
-	public ManageProductController(ProductService ps, ServletContext servletContext) {
+	public ManageProductController(ProductService ps, ModeratorService ms, ServletContext servletContext) {
 		this.productService = ps;
+		this.moderatorService = ms;
 		this.servletContext = servletContext;
 	}
     
@@ -48,13 +51,14 @@ public class ManageProductController {
 			// If Moderator : get his own product list
    			List<Product> productList = productService.getSellerProducts(loginUser.getId());
 		    model.addAttribute("productList", productList);
+		    model.addAttribute("moderatorService", moderatorService);
    		}
         return "manageProduct";
     }
 
     @PostMapping
     public String doPost(@RequestParam("action") String action,
-    		@RequestParam(value = "productId", required = false) int productId,
+    		@RequestParam(value = "productId", required = false) Integer productId,
     		@RequestParam(value = "imgFile", required = false) MultipartFile[] imgFileArray,
     		@RequestParam(value = "img", required = false) String[] imgString,
     		@RequestParam(value = "name", required = false) String[] nameString,
@@ -75,8 +79,10 @@ public class ManageProductController {
                   for (MultipartFile imgFile : imgFileArray) {
                       fileNameString.add(imgFile.getOriginalFilename());
                   }
+                  List<Product> productList;
+                  if (IndexController.loginUser(model).getTypeUser().equals("Administrator")) productList = productService.getProductList();
+                  else productList = productService.getSellerProducts(IndexController.loginUser(model).getId());
 
-                  List<Product> productList = productService.getProductList();
                   if (productList != null && imgString != null && nameString != null && priceString != null && stockString != null && fileNameString != null) {
                   	Product product = null;
                   	String name = null;

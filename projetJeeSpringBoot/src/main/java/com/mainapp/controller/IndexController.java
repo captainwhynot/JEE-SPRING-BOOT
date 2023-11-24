@@ -11,7 +11,7 @@ import com.mainapp.entity.User;
 
 @Controller
 @RequestMapping("/Index")
-@SessionAttributes({"user"})
+@SessionAttributes({"user", "moderatorService"})
 public class IndexController {
 	
 	@GetMapping

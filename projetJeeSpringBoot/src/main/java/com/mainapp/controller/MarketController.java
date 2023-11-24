@@ -12,16 +12,19 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mainapp.entity.Product;
 import com.mainapp.service.ProductService;
+import com.mainapp.service.UserService;
 
 @Controller
 @RequestMapping("/Market")
-@SessionAttributes({"user", "productList", "search", "sellerId"})
+@SessionAttributes({"user", "moderatorService", "userService", "productList", "search", "sellerId"})
 public class MarketController {
 
 	private ProductService productService;
+	private UserService userService;
 	
-	public MarketController(ProductService ps) {
+	public MarketController(ProductService ps, UserService us) {
 		this.productService = ps;
+		this.userService = us;
 	}
     
 	@GetMapping
@@ -42,6 +45,7 @@ public class MarketController {
         } else if (sellerId != null) {
             productList = productService.getSellerProducts(sellerId);
             model.addAttribute("sellerId", sellerId);
+            model.addAttribute("userService", userService);
         } else {
             productList = productService.getProductList();
         }

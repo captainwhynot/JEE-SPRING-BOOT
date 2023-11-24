@@ -38,11 +38,11 @@ if (isLogged) {
 					<p class="card-text">Username : <%= loginUser.getUsername() %> <i class="fas fa-edit" onclick="newInfo('username');"></i></p>
 					<p class="card-text">Password : ********* <i class="fas fa-edit" onclick="newInfo('password');"></i></p>
 					<% if (loginUser.getTypeUser().equals("Customer")) {
-						CustomerService cs = (CustomerService) session.getAttribute("CustomerService");
+						CustomerService cs = (CustomerService) session.getAttribute("customerService");
 						Customer customer = cs.getCustomer(loginUser.getId());%>
 						<p class="card-text">Fidelity Points : <%= customer.getFidelityPoint() %></p>
 					<% } else if (loginUser.getTypeUser().equals("Moderator")) {
-						ModeratorService ms = (ModeratorService) session.getAttribute("ModeratorService");
+						ModeratorService ms = (ModeratorService) session.getAttribute("moderatorService");
 						Moderator moderator = ms.getModerator(loginUser.getId());%>
 						<p class="card-text">Can add product : <%= moderator.canAddProduct() %></p>
 						<p class="card-text">Can modify product : <%= moderator.canModifyProduct() %></p>

@@ -30,12 +30,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
     @Query(value = "SELECT * FROM Product WHERE seller_id= :id", nativeQuery = true)
 	List<Product> getSellerProducts(@Param("id") int id);
     
-    @Query(value = "SELECT * FROM Product WHERE name LIKE '%:search%'", nativeQuery = true)
+    @Query(value = "SELECT * FROM Product WHERE name LIKE %:search%", nativeQuery = true)
 	List<Product> getProductByName(@Param("search") String search);
     
-   
-
-
 	@Transactional
     @Modifying
     @Query(value = "UPDATE Product SET stock = :stock WHERE id = :id", nativeQuery = true)

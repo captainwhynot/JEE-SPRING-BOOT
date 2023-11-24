@@ -54,7 +54,7 @@
                         <tr>
 	                        <td colspan=6>Discount</td>
 		                        <% 
-		                        CustomerService cs = (CustomerService) session.getAttribute("CustomerService");
+		                        CustomerService cs = (CustomerService) session.getAttribute("customerService");
 	                        	Customer customer = cs.getCustomer(loginUser.getId());
 	                        	double fidelityPoint = customer.getFidelityPoint();
 	                        	double discount = (fidelityPoint > totalOrderPrice) ? totalOrderPrice : fidelityPoint;

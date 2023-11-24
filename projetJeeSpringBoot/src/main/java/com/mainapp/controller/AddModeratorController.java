@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/AddModerator")
-@SessionAttributes({"userList", "showAlert", "transferList", "user"})
+@SessionAttributes({"user", "moderatorService", "showAlert", "userList", "transferList"})
 public class AddModeratorController {
 
 	private UserService userService;
@@ -41,6 +41,7 @@ public class AddModeratorController {
     	
     	List<User> userList = userService.getAllNoAdministrator();
     	model.addAttribute("userList", userList);
+    	model.addAttribute("moderatorService", moderatorService);
         return "addModerator";
     }
 
@@ -58,6 +59,7 @@ public class AddModeratorController {
         			Moderator moderator = moderatorService.getModerator(email);
         			if (!moderatorService.transferIntoCustomer(moderator)) {
         				model.addAttribute("showAlert", "<script>showAlert('Transfer failed.', 'error', './AddModerator')</script>");
+        				return doGet(model);
         			}
         		}
         		else if (user.getTypeUser().equals("Customer") && isChecked) {
@@ -65,11 +67,13 @@ public class AddModeratorController {
         			Customer customer = customerService.getCustomer(email);
         			if (!customerService.transferIntoModerator(customer)) {
         				model.addAttribute("showAlert", "<script>showAlert('Transfer failed.', 'error', './AddModerator')</script>");
+        				return doGet(model);
         			}
         		}
         	}
-			model.addAttribute("showAlert", "<script>showAlert('Transfer completed.', 'success', './ManageModerator')</script>");
+			model.addAttribute("showAlert", "<script>showAlert('Transfer completed.', 'success', './AddModerator')</script>");
+			//model.addAttribute("showAlert", "<script>showAlert('Transfer completed.', 'success', './ManageModerator')</script>");
         }
-		return "AddModerator";
+		return doGet(model);
     }
 }
