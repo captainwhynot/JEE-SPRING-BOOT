@@ -1,7 +1,6 @@
 package com.mainapp.service;
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +51,7 @@ public class CustomerService {
 	}
 	
 	public boolean transferIntoModerator(Customer customer) {
-		Moderator moderator = new Moderator(customer.getEmail(), BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt(12)), customer.getUsername());
+		Moderator moderator = new Moderator(customer.getEmail(), customer.getPassword(), customer.getUsername());
 	    boolean delete = deleteCustomer(customer);
 	    boolean save = us.saveUser(moderator);
 		return (delete && save);

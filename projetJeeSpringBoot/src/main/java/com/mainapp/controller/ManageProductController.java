@@ -128,7 +128,8 @@ public class ManageProductController {
     
     public ResponseEntity<String> deleteProduct(int productId, Model model) {
         try {
-            if (productService.deleteProduct(productId)) {
+  	        String savePath = this.servletContext.getRealPath("/img/Product");
+            if (productService.deleteProduct(productId, savePath)) {
             	return ResponseEntity.ok("Product deleted successfully.");
             } else {
             	return ResponseEntity.ok("Failed to delete product.");

@@ -15,6 +15,8 @@ import com.mainapp.service.CustomerService;
 import com.mainapp.service.ModeratorService;
 import com.mainapp.service.UserService;
 
+import jakarta.servlet.ServletContext;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,11 +28,13 @@ public class AddModeratorController {
 	private UserService userService;
 	private ModeratorService moderatorService;
 	private CustomerService customerService;
+	private ServletContext servletContext;
 	
-	public AddModeratorController(UserService us, ModeratorService ms, CustomerService cs) {
+	public AddModeratorController(UserService us, ModeratorService ms, CustomerService cs, ServletContext servletContext) {
 		this.userService = us;
 		this.moderatorService = ms;
 		this.customerService = cs;
+		this.servletContext = servletContext;
 	}
 	
     @GetMapping
@@ -56,8 +60,9 @@ public class AddModeratorController {
         		User user =  userService.getUser(email);
         		if (user.getTypeUser().equals("Moderator") && !isChecked) {
         			//Transfer the moderator into a customer
+          	        String savePath = this.servletContext.getRealPath("/img/Product");
         			Moderator moderator = moderatorService.getModerator(email);
-        			if (!moderatorService.transferIntoCustomer(moderator)) {
+        			if (!moderatorService.transferIntoCustomer(moderator, savePath)) {
         				model.addAttribute("showAlert", "<script>showAlert('Transfer failed.', 'error', './AddModerator')</script>");
         				return doGet(model);
         			}

@@ -97,11 +97,20 @@ public class ProductService {
 		return pr.getProduct(id);
 	}
 	
-	public boolean deleteProduct(int id) {
+	public boolean deleteProduct(int id, String savePath) {
 		try {
 			Product product = this.getProduct(id);
             List<Basket> baskets = product.getBaskets();
             
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(id + "_"));
+	        
+	        //Delete all the old image of the product
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
             //Delete the product and the product's reference in all basket using it.
 	        pr.delete(product);
 	        for (Basket basket : baskets) {

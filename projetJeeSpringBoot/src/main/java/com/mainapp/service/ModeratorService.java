@@ -1,9 +1,11 @@
 package com.mainapp.service;
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.hibernate.Hibernate;
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mainapp.entity.Customer;
 import com.mainapp.entity.Moderator;
@@ -63,26 +65,26 @@ public class ModeratorService {
 		}
 	}
 	
-	public boolean transferIntoCustomer(Moderator moderator) {
-		Customer customer = new Customer(moderator.getEmail(), BCrypt.hashpw(moderator.getPassword(), BCrypt.gensalt(12)), moderator.getUsername());
-	    boolean delete = deleteModerator(moderator);
+	public boolean transferIntoCustomer(Moderator moderator, String savePath) {
+		Customer customer = new Customer(moderator.getEmail(), moderator.getPassword(), moderator.getUsername());
+	    boolean delete = deleteModerator(moderator, savePath);
 	    boolean save = us.saveUser(customer);
 		return (delete && save);
 	}
 	
-	public boolean deleteModerator(Moderator moderator) {
+	@Transactional
+	public boolean deleteModerator(Moderator moderator, String savePath) {
 		try {
-	        User user = moderator.getUser();
-	        moderator.setUser(null);
-	        List<Product> products = moderator.getProducts();
+	        User user = us.getUser(moderator.getId());
+	        List<Product> products = user.getProducts();
 
 	        //Delete the moderator & the user & the moderator's products
 	        mr.delete(moderator);
 	        if (user != null) {
-	            us.getUr().delete(user);
+		        us.getUr().delete(user);
 	        }
 	        for (Product product : products) {
-	        	ps.getPr().delete(product);
+		        ps.deleteProduct(product.getId(), savePath);
 	        }
 	        return true;
 	    } catch (Exception e) {
