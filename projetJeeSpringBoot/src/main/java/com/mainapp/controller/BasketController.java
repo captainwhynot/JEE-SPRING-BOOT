@@ -161,7 +161,7 @@ public class BasketController {
 								+ "<td colspan='5'>Total Order Price :</td>" + "<td>"
 								+ String.format("%.2f", totalOrderPrice) + "</td>" + "</tr>" + "</tbody>" + "</table><br>";
 						container += "<span style='color: black'>Click here to access the site : </span>";
-						container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>";
+						container += "<a href=\"http://localhost:8080/Index\">MANGASTORE</a>";
 
 						// Finalize the paiement and send the recapitulation mail of paiement
 						if (basketService.finalizePaiement(loginUser.getId(), cardNumber, basketService.totalPrice(loginUser.getId()), container)) {

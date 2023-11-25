@@ -76,7 +76,7 @@ public class RegistrationController {
 			container += "<li>username : " + username + "<br></li>";
 			container += "</ul>";
 			container += "Go to the site : ";
-			container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>" +
+			container += "<a href=\"http://localhost:8080/Index\">MANGASTORE</a>" +
 					     "</div>";
 			// Send registration confirmation mail
 			if (userService.sendMail(email, "MANGASTORE : Registration", container)) {
