@@ -14,19 +14,42 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import com.mainapp.entity.*;
 import com.mainapp.service.*;
 
+/**
+ * The main class for the ProjetJeeSpringBoot application.
+ * This class serves as the entry point for the Spring Boot application.
+ * It initializes and runs the application, populates the database with demo data,
+ * and demonstrates various functionalities.
+ */
 @SuppressWarnings("deprecation")
-
 @SpringBootApplication(scanBasePackages = "com.mainapp")
 @EnableJpaRepositories(basePackages = "com.mainapp")
 @EntityScan(basePackages = "com.mainapp.entity")
 public class ProjetJeeSpringBootApplication {
 
+    /**
+     * The main method that serves as the entry point for the Spring Boot application.
+     *
+     * @param args The command line arguments.
+     */
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetJeeSpringBootApplication.class, args);
 	}
 
+    /**
+     * CommandLineRunner bean for initializing and demonstrating application functionalities.
+     *
+     * This bean is executed on application startup and performs various actions such as creating users, customers, moderators, products, credit cards, and baskets. It simulates the order and payment processes.
+     *
+     * @param us UserService for user-related operations.
+     * @param cs CustomerService for customer-related operations.
+     * @param ms ModeratorService for moderator-related operations.
+     * @param ps ProductService for product-related operations.
+     * @param ccs CreditCardService for credit card-related operations.
+     * @param bs BasketService for basket-related operations.
+     * @return A CommandLineRunner instance for the Spring Boot application.
+     */
     @Bean
-    CommandLineRunner demo(UserService us, CustomerService cs, ModeratorService ms, ProductService ps, CreditCardService ccs, BasketService bs) {
+    CommandLineRunner initializeDatabase(UserService us, CustomerService cs, ModeratorService ms, ProductService ps, CreditCardService ccs, BasketService bs) {
         return (args) -> {
         	try {              
         		// Créer un administrateur
@@ -121,9 +144,7 @@ public class ProjetJeeSpringBootApplication {
         		}
         	} catch(Exception e) {
         		e.printStackTrace();
-        		}
-        	
+        	}
         };
     }
-
 }
