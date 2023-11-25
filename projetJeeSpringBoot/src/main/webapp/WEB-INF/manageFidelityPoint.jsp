@@ -43,7 +43,10 @@
 </body>
 <% } else { %>
 <script type="text/javascript">showAlert();</script>
-<% } %>
-<%= session.getAttribute("showAlert") %>
-<% session.removeAttribute("showAlert"); %>
+<% } 
+if (session.getAttribute("showAlert") != null) { %>
+	<%= session.getAttribute("showAlert") %>
+	<% session.removeAttribute("showAlert"); 
+} 
+%>
 </html>

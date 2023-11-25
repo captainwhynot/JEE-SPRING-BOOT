@@ -57,6 +57,10 @@
             <% } %>
     <%@ include file="footer.jsp"%>
 </body>
-<%= session.getAttribute("showAlert")%>
-<% session.removeAttribute("showAlert"); %>
+<%
+if (session.getAttribute("showAlert") != null) { %>
+	<%= session.getAttribute("showAlert") %>
+	<% session.removeAttribute("showAlert"); 
+} 
+%>
 </html>
