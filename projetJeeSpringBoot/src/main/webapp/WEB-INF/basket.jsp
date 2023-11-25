@@ -55,6 +55,7 @@
 		                     <td colspan=6>Total Order Price :</td>
 		                     <% String totalOrderPriceString = String.format("%.2f", totalOrderPrice); %>
 		                     <td><span class="totalOrderPrice"><%= totalOrderPriceString %></span></td>
+		                     <td></td>
 	                     </tr>
 	                </tbody>
 	           	</table>

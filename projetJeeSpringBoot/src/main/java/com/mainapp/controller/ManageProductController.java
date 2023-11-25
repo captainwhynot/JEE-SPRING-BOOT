@@ -21,7 +21,11 @@ import jakarta.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Controller class for managing product information and interactions.
+ *
+ * This controller handles both GET and POST requests related to managing products.
+ */
 @Controller
 @RequestMapping("/ManageProduct")
 @SessionAttributes({"user", "showAlert", "moderatorService", "productList", "action", "productId", "img", "name", "price", "stock", "imgFile"})
@@ -30,13 +34,28 @@ public class ManageProductController {
 	private ProductService productService;
 	private ModeratorService moderatorService;
 	private ServletContext servletContext;
-	
+
+    /**
+     * Constructor for ManageProductController.
+     *
+     * @param ps ProductService instance for product-related operations.
+     * @param ms ModeratorService instance for moderator-related operations.
+     * @param servletContext ServletContext for obtaining the real path of the image directory.
+     */
 	public ManageProductController(ProductService ps, ModeratorService ms, ServletContext servletContext) {
 		this.productService = ps;
 		this.moderatorService = ms;
 		this.servletContext = servletContext;
 	}
-    
+
+    /**
+     * Handles GET requests for managing products.
+     * Retrieves the list of products based on the user's role (Administrator or Moderator)
+     * and adds it to the model.
+     *
+     * @param model Model object for adding attributes used by the view.
+     * @return The view "manageProduct".
+     */
 	@GetMapping
     public String doGet(Model model) {
 		if(!IndexController.isLogged(model)) {
@@ -44,11 +63,11 @@ public class ManageProductController {
         }
 		User loginUser = IndexController.loginUser(model);
 		if (loginUser.getTypeUser().equals("Administrator")) {
-			// If Administrator : get all the products' list
+   			// Get the list of all products for administrators
 			List<Product> productList = productService.getProductList();		
 		    model.addAttribute("productList", productList);
    		} else if (loginUser.getTypeUser().equals("Moderator")) {
-			// If Moderator : get his own product list
+   			// Get the list of products of the logged in moderator
    			List<Product> productList = productService.getSellerProducts(loginUser.getId());
 		    model.addAttribute("productList", productList);
 		    model.addAttribute("moderatorService", moderatorService);
@@ -58,19 +77,20 @@ public class ManageProductController {
 
     @PostMapping
     public String doPost(@RequestParam("action") String action,
-    		@RequestParam(value = "productId", required = false) Integer productId,
-    		@RequestParam(value = "imgFile", required = false) MultipartFile[] imgFileArray,
-    		@RequestParam(value = "img", required = false) String[] imgString,
-    		@RequestParam(value = "name", required = false) String[] nameString,
-    		@RequestParam(value = "price", required = false) String[] priceString,
-    		@RequestParam(value = "stock", required = false) String[] stockString,
-    		Model model) {
+			    		@RequestParam(value = "productId", required = false) Integer productId,
+			    		@RequestParam(value = "imgFile", required = false) MultipartFile[] imgFileArray,
+			    		@RequestParam(value = "img", required = false) String[] imgString,
+			    		@RequestParam(value = "name", required = false) String[] nameString,
+			    		@RequestParam(value = "price", required = false) String[] priceString,
+			    		@RequestParam(value = "stock", required = false) String[] stockString,
+			    		Model model) {
     	if(!IndexController.isLogged(model)) {
         	return "redirect:/Index";
         }
         if (action != null) {
           	if (action.equals("updateProduct")){
-          		  //Update product's informations
+          		  // Update product's informations
+                  // Get all the uploaded files' data from the request
                   List<String> fileNameString = new ArrayList<>();
                   for (MultipartFile imgFile : imgFileArray) {
                       fileNameString.add(imgFile.getOriginalFilename());
@@ -93,20 +113,20 @@ public class ManageProductController {
                   		name = nameString[i];
                   		price = Double.parseDouble(priceString[i]);
                   		stock = Integer.parseInt(stockString[i]);
-                  		//If no file has been uploaded : get the old fileName
+                  		// If no file has been uploaded : get the old fileName
                   		fileName = fileNameString.get(i);
                   		if (fileName == null || fileName.equals("")) {
                   			fileName = imgString[i];
                   		}
                   		imgFile = imgFileArray[i];
                   		
-                  		//Update all the product's information if there is a change
+                  		// Update all the product's information if there is a change
                   		if (!product.getName().equals(name) || Double.compare(product.getPrice(), price) != 0 || Integer.compare(product.getStock(), stock) != 0) {
               				if (!productService.modifyProduct(product, name, price, stock)) {
               					model.addAttribute("showAlert", "<script>showAlert('An error has occured updating the product.', 'error', './ManageProduct')</script>");
                   			}
                   		}
-                  		//Update the product's image if this is a new image
+                  		// Update the product's image if this is a new image
                   		if (!fileName.contains("img/Product/")) {
                   			if (!productService.updateProductImg(product, imgFile, fileName, savePath)) {
               					model.addAttribute("showAlert", "<script>showAlert('An error has occured updating the product\\'s image.', 'error', './ManageProduct')</script>");
@@ -121,11 +141,20 @@ public class ManageProductController {
 	    }
         return "manageProduct";
     }    
-    
+
+    /**
+     * Handles POST requests to delete a product.
+     * Deletes the specified product and returns a response.
+     *
+     * @param productId The productId parameter from the form.
+     * @param model     Model object for adding attributes used by the view.
+     * @return ResponseEntity with a success or failure message.
+     */
     @PostMapping("/DeleteProduct")
     public ResponseEntity<String> deleteProduct(@RequestParam("productId") int productId, Model model) {
         try {
-  	        String savePath = this.servletContext.getRealPath("/img/Product");
+            // Delete product
+        	String savePath = this.servletContext.getRealPath("/img/Product");
             if (productService.deleteProduct(productId, savePath)) {
             	return ResponseEntity.ok("Product deleted successfully.");
             } else {

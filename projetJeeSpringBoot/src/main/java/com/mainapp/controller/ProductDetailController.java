@@ -16,6 +16,11 @@ import com.mainapp.service.BasketService;
 import com.mainapp.service.CustomerService;
 import com.mainapp.service.ProductService;
 
+/**
+ * Controller class for managing product details and interactions.
+ *
+ * This controller handles both GET and POST requests related to displaying product details and adding products to the basket.
+ */
 @Controller
 @RequestMapping("/Product")
 @SessionAttributes({"user", "showAlert", "moderatorService", "productService", "productId", "action"})
@@ -24,28 +29,54 @@ public class ProductDetailController {
 	private ProductService productService;
 	private CustomerService customerService;
 	private BasketService basketService;
-	
+
+    /**
+     * Constructor for ProductDetailController.
+     *
+     * @param ps ProductService instance for product-related operations.
+     * @param bs BasketService instance for basket-related operations.
+     * @param cs CustomerService instance for customer-related operations.
+     */
 	public ProductDetailController(ProductService ps, BasketService bs, CustomerService cs) {
 		this.productService = ps;
 		this.basketService = bs;
 		this.customerService = cs;
 	}
-    
+
+    /**
+     * Handles GET requests for product details.
+     * Displays the details of the specified product.
+     *
+     * @param productId The ID of the product to display.
+     * @param model     Model object for adding attributes used by the view.
+     * @return The view "product".
+     */
 	@GetMapping
     public String doGet(@RequestParam("productId") Integer productId,
-    		Model model) {
+    					Model model) {
+   		// Display the product's information
 		model.addAttribute("productId", productId);
 		model.addAttribute("productService", productService);
         return "product";
     }
 
+    /**
+     * Handles POST requests for product interactions.
+     * Processes the form submission, and if the action is to add the product to the basket,
+     * adds the specified product to the customer's basket.
+     *
+     * @param action   The action parameter from the form.
+     * @param productId The ID of the product to interact with.
+     * @param model     Model object for adding attributes used by the view.
+     * @return The view "product".
+     */
     @PostMapping
     public String doPost(@RequestParam(value = "action", required = false) String action,
-    		@RequestParam("productId") Integer productId,
-    		Model model) {		
+			    		@RequestParam("productId") Integer productId,
+			    		Model model) {		
 		if (action != null) {
 			if (action.equals("addOrder")) {
-				//Add the product to the basket
+				// Add the product to the basket
 				if (IndexController.isLogged(model)) {
 					User user = IndexController.loginUser(model);
 					if (user.getTypeUser().equals("Customer")) {
