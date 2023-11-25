@@ -23,6 +23,9 @@
         max-width: 100%;
         height: auto;
     }
+    .product-item:hover {
+            transform: scale(1.04);
+        }
     </style>
 </head>
 <body>
