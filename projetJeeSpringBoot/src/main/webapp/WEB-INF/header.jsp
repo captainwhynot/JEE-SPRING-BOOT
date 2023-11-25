@@ -157,10 +157,10 @@ boolean isLogged = loginUser != null && loginUser.getId() != 0;
 		</div>
 	</nav>
 	<script>
-        let inputBox = document.querySelector(".input-box"),
-            searchIcon = document.querySelector(".icon"),
-            closeIcon = document.querySelector(".close-icon");
-        searchIcon.addEventListener("click", () => inputBox.classList.add("open"));
-        closeIcon.addEventListener("click", () => inputBox.classList.remove("open"));
-    </script>
+    let inputBox = document.querySelector(".input-box"),
+        searchIcon = document.querySelector(".search-icon"),
+        closeIcon = document.querySelector(".close-icon");
+    searchIcon.addEventListener("click", () => inputBox.classList.add("open"));
+    closeIcon.addEventListener("click", () => inputBox.classList.remove("open"));
+	</script>
 </header>
