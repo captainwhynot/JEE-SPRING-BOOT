@@ -174,4 +174,17 @@ public class BasketController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update stock."); //ERROR 500
 		}
     }
+    
+    @PostMapping("/DeleteOrder")
+    public ResponseEntity<String> deleteOrder(@RequestParam("basketId") int basketId, Model model) {
+        try {
+            if (basketService.deleteOrder(basketId)) {
+            	return ResponseEntity.ok("Order n°"+basketId+" deleted successfully.");
+            } else {
+            	return ResponseEntity.badRequest().body("Failed to delete order.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete order.");
+        }
+    }
 }

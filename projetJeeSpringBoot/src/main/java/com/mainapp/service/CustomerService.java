@@ -45,7 +45,7 @@ public class CustomerService {
 		if (points >= 0) {
 			update = cr.addFidelityPoint(customer, points);
 		} else {
-			update = cr.useFidelityPoint(customer, points);
+			update = cr.useFidelityPoint(customer, Math.abs(points));
 		}
 		return (update > 0);
 	}

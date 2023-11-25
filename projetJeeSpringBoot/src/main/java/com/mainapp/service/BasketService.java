@@ -45,6 +45,10 @@ public class BasketService {
 	        // Handle the case where no result is found (oldBasket is null)
 	        try {
 	        	br.save(basket);
+	        	//If the product is out of stock, add it with quantity null
+	        	if (!checkStock(basket.getId(), quantity)) {
+	        		updateQuantity(basket.getId(), 0);
+				}
 		        return true;
 	        } catch (Exception e) {
 		        return false;

@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
 <%@ include file="header.jsp" %>
 <% if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
 <body>
@@ -21,6 +22,7 @@
 		                     <th>Quantity</th>
 		                     <th>Seller</th>
 		                     <th>Total Price</th>
+		                     <th>Delete Order</th>
 		                 </tr>
 		             </thead>
 		             <tbody>
@@ -45,6 +47,8 @@
 	                            totalOrderPrice += total;
 	                            %>
 	                            <td><span class="totalPrice"><%= totalString %></span></td>
+	                            <td><button type="button" style="padding : 0; background : none;" onclick="deleteOrder(<%= basket.getId() %>)">
+		                            <i class="fas fa-trash" style="color: red;"></i></button></td>
 	                        </tr>
 	                     <% }  %>
 	                     <tr>
@@ -106,6 +110,25 @@
 	        });
 
 	        document.querySelector('.totalOrderPrice').textContent = totalOrderPrice.toFixed(2);
+	    }
+	    
+	    function deleteOrder(basketId) {
+	    	//Delete the order
+	    	$.ajax({
+	            type: "POST",
+	            url: "Basket/DeleteOrder",
+	            data: { basketId: basketId },
+	            dataType: "json",
+	            success: function (response) {
+	            },
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            	if (jqXHR.status == 200) {
+	            		showAlert("Success : " + jqXHR.responseText, "success", "./Basket");
+	            	} else {
+	            		showAlert("Error " + jqXHR.status + ": " + jqXHR.responseText, "error", "./Basket");
+	            	}
+	            }
+	        });
 	    }
 	</script>
 </body>

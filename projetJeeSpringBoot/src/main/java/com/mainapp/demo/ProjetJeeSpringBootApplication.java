@@ -30,7 +30,7 @@ public class ProjetJeeSpringBootApplication {
         return (args) -> {
         	try {              
         		// Créer un administrateur
-                /*Administrator admin = new Administrator("mailAdmin",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
+                Administrator admin = new Administrator("mailAdmin",  BCrypt.hashpw("password", BCrypt.gensalt(12)), "Admin");
                 us.saveUser(admin);
                 
                 // Créer et modifier un modo
@@ -59,7 +59,7 @@ public class ProjetJeeSpringBootApplication {
         		System.out.println(cs.setFidelityPoint(cust, -5));
                 
         		//Créer une carte bancaire
-				CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20));
+				CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 12 - 1, 20));
         		card.setCredit(1000);
         		System.out.println(ccs.saveCreditCard(card));
                 
@@ -114,19 +114,11 @@ public class ProjetJeeSpringBootApplication {
         		System.out.println(bs.addOrder(basket, cust.getId(), 1));
         		System.out.println(bs.updateQuantity(basket.getId(), 2));
         		System.out.println(bs.confirmOrder(cust.getId()));
-        		if (ccs.checkCreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20))) {
+        		if (ccs.checkCreditCard(123, 111, new Date(2023 - 1900, 12 - 1, 20))) {
         			if (ccs.checkBalance(123, bs.totalPrice(cust.getId()))) {
         				System.out.println(bs.finalizePaiement(cust.getId(), 123, bs.totalPrice(cust.getId()),"testMain"));
         			}
-        		}*/
-        		
-        		/*cs.transferIntoModerator(cust);
-        		ms.transferIntoCustomer(modo);
-        		System.out.println(bs.deleteOrder(basket.getId()));
-        		System.out.println(ps.deleteProduct(product.getId()));
-        		System.out.println(ms.deleteModerator(modo));
-        		System.out.println(cs.deleteCustomer(cust));		
-        		System.out.println(ccs.deleteCreditCard(card.getCardNumber()));*/
+        		}
         	} catch(Exception e) {
         		e.printStackTrace();
         		}
