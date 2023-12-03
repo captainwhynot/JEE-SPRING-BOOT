@@ -39,8 +39,10 @@
                         %>
                         <td><%= priceString %></td>
                         <td><%= basket.getQuantity() %></td>
-                        <td><a href="./Market"><%= basket.getProduct().getUser().getUsername() %></a>
-                        <input type="hidden" name="sellerId" value="<%= basket.getProduct().getUser().getId() %>"></td>
+                        <td><form method="POST" action="Market">
+             				<input type="hidden" name="sellerId" value="<%= basket.getProduct().getUser().getId() %>">                        
+                        	<button type="submit" style="background: none; padding: 0; font-size: 16px; color: #007bff;"><%= basket.getProduct().getUser().getUsername() %></button>
+                       	</form></td>
                         <% 
                         double total = basket.getProduct().getPrice() * basket.getQuantity(); 
                         String totalString = String.format("%.2f", total);

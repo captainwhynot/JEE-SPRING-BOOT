@@ -8,7 +8,7 @@
         <form method="post" class="login-form text-center" action="Registration">
             <div class="form-group">
                 <label for="email">E-mail :</label>
-                <input type="text" id="email" name="email" class="form-control" required>
+                <input type="email" id="email" name="email" class="form-control" required>
             </div>
 			
 			<div class="form-group">
