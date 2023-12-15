@@ -27,7 +27,8 @@ Pour se connecter en tant que modo :
 -Un compte créé est de base un compte de client.
 -Un Admin peut transformer un client en tant que modérateur, il n'y a pas de création de compte directe pour un modérateur.
 -L'ensemble des fonctionnalités propre à chaque type d'utilisateur seront accessibles directement depuis la barre de menu dans le header du site.
-
+-Pour utiliser une carte bancaire, il faut l'ajouter dans la table CreditCard manuellement. Par défaut, il y en a une avec :
+  Numéro : 123, CVV : 111, Date d'expiration : 20/12/2024
 
 SI VOUS AVEZ UN PROBLEME AVEC LE PROJET:
 -contactez LEMBA Mohamed / CAI Christophe / HADDACHE Noaman / OUALI Abd-Ennour sur teams OU lembamoham@cy-tech.fr / caichristo@cy-tech.fr / haddacheno@cy-tech.fr / ouaaliabde@cy-tech.fr par mail
